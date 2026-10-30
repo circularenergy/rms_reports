@@ -1,0 +1,3 @@
+CE RMS Dashboard GUI V4 WIP
+4.0.3-integration-candidate — 2026-10-30
+Narrow visual corrections: freshness placement, report spacing, BMS popup row visibility.

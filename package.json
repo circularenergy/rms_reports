@@ -1,0 +1,10 @@
+{
+  "name": "ce-rms-dashboard-v4",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/core.test.mjs tests/request-scheduler.test.mjs"
+  },
+  "description": "Static application; Node is optional for verification only",
+  "version": "4.0.1"
+}

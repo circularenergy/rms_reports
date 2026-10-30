@@ -1,0 +1,6 @@
+import {installReceiver} from '../../js/host/report-bridge.js';
+import {legacyBms} from '../../js/host/bms-compat.js';
+import {scopeRows} from '../../js/host/context.js';
+const provenance=b=>Object.entries(b.provenance||{}).map(([k,v])=>k+': '+new Date(v.retrievedAt).toLocaleString()+(v.reused?' (reused)':'')).join(' · ');
+const scoped=(data,site)=>({...data,site_summary:scopeRows(data.site_summary||[],site),...(data.critical_events?{critical_events:scopeRows(data.critical_events,site)}:{})});
+installReceiver({render(b){const i=b.inputs,c=b.context,summary=i.bms.site_summary?i.bms:legacyBms(i.bms),health={...i.data_health,sites:scopeRows(i.data_health.sites,c.site)},configured=summary.site_summary;for(const s of health.sites){const row=configured.find(r=>r.site_id===s.site);if(!row||!Number.isInteger(row.module_count)||row.module_count<0||row.module_count>8)throw Error(s.site+': stable configured inventory is unavailable; cannot map it to the approved Health module-count contract.');}window.CEReport.render({data:{bms:summary,energy:i.energy,data_health:health},references:i.data_health.sites,mode:b.mode,source:provenance(b)});}});

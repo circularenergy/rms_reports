@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CE RMS BMS output review</title>
+<style>
+:root {
+ --ink:#122746;--muted:#64748b;--wash:#f5f7fc;--accent:#7654a3;
+ --line:#dce3ef;--pale:#f1edfa;--blue:#438ac5;--green:#177c51;
+ --amber:#ad630c;--amber-bg:#fff5e8;--radius:13px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--wash);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:13px;line-height:1.5}
+button,select,input{font:inherit}
+button,select{cursor:pointer}
+button{color:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.page-header{position:sticky;top:0;z-index:15;background:white;border-bottom:1px solid var(--line);box-shadow:0 3px 20px #1a2e4e0d}
+header,.toolbar,main,footer{max-width:1440px;margin:auto;padding-left:24px;padding-right:24px}
+header{padding-top:18px;padding-bottom:0;display:flex;align-items:center;justify-content:space-between;gap:20px}
+h1{font-size:25px;font-weight:800;letter-spacing:-.6px;line-height:1.3;margin:0}
+header p{margin:4px 0 0;font-size:12px;color:var(--muted)}
+h2{font-size:17px;line-height:1.5;font-weight:800;margin:0;letter-spacing:normal}
+h3{font-size:13px;line-height:1.5;font-weight:750;margin:18px 0 9px}
+p{margin:0}
+.muted{color:var(--muted)}.small{font-size:11px}
+.eyebrow{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent)}
+.toolbar{display:flex;align-items:end;gap:10px;flex-wrap:wrap;padding-top:12px;padding-bottom:16px}
+.control{display:flex;flex-direction:column;align-items:flex-start;gap:5px;color:var(--muted);font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+select,.btn{border:1px solid #d5ddec;border-radius:8px;background:white;color:var(--ink);padding:8px 10px;font-size:12px;line-height:1.5}
+select{max-width:300px;min-height:36px;text-transform:none;letter-spacing:normal;font-weight:400}
+.btn{font-weight:500;min-height:36px}
+.btn:hover,select:hover{background:#f6f3fc;border-color:#ad9acb}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:white}
+.btn.primary:hover{background:#63438e}
+.toolbar .spacer{flex:1}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:20px;font-size:11px;font-weight:700;line-height:1.4;background:#eee9f9;color:#5b388a;white-space:nowrap}
+.badge.green{background:#edf8f3;color:#1d6a45}.badge.blue{background:#edf3fc;color:#37679d}.badge.amber{background:var(--amber-bg);color:#94520b}
+main{padding-top:20px}
+.notice{background:#f0f3fa;border:1px solid #e1e7f2;border-radius:8px;padding:10px 13px;margin-bottom:16px;color:#52627d;font-size:11px;line-height:1.65}
+.notice strong{color:#344d70;font-weight:750}
+.notice.warn{background:var(--amber-bg);border-color:#edd9bd;color:#94520b}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(125px,1fr));gap:12px;margin:0 0 18px}
+.kpi{background:white;border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:12px;padding:16px 17px;min-height:110px}
+.kpi:nth-child(1){border-top-color:var(--blue)}.kpi:nth-child(3){border-top-color:#c63c47}.kpi:nth-child(4){border-top-color:#ed9f36}
+.kpi label{display:block;font-size:11px;font-weight:500;line-height:1.4;color:var(--muted)}
+.kpi strong{display:block;font-size:28px;font-weight:750;line-height:1.24;letter-spacing:-.6px;margin:9px 0 4px}
+.kpi small{display:block;color:var(--muted);font-size:11px;line-height:1.45}
+.section{background:white;border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 6px 17px #12274608;margin:17px 0;overflow:hidden;scroll-margin-top:175px}
+.section-head{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:16px 19px;border-bottom:1px solid var(--line)}
+.section-head p{font-size:11px;color:var(--muted);margin:2px 0 0;line-height:1.5;max-width:1020px}
+.section-body{padding:14px 17px}
+.scroll{width:100%;max-width:100%;overflow:auto;border:1px solid var(--line);border-radius:9px;scrollbar-color:#bbb0d1 #f1eff7;scrollbar-width:thin}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px;font-variant-numeric:tabular-nums;line-height:1.5}
+th{background:#f1eff8;color:#33415e;font-size:11px;font-weight:700;line-height:1.5;padding:10px 8px;text-align:center;vertical-align:middle;border-bottom:1px solid #d5d7e6;white-space:normal;word-break:normal;overflow-wrap:normal}
+td{padding:9px 10px;border-bottom:1px solid #e6eaf2;text-align:center;vertical-align:middle;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even) td{background:#fbfcfe}
+tbody tr:hover td{background:#eff0fd!important}
+thead{position:sticky;top:0;z-index:3}
+tbody td:first-child,thead tr:first-child>th:first-child{position:sticky;left:0;z-index:2;background:#f9fafd;text-align:left;font-weight:700;border-right:1px solid #e4e8f1}
+thead tr:first-child>th:first-child{z-index:4;background:#f1eff8}
+.clickable-row{cursor:pointer}.clickable-row:focus-visible{outline:3px solid #a68be0;outline-offset:-3px}
+.site-link{border:0;background:none;padding:0;color:var(--ink);font-weight:700;font-size:12px;line-height:1.5;text-decoration:none}
+.site-link:hover{text-decoration:underline;text-underline-offset:4px;background:none}
+.heading-unit{display:block;font-size:10px;font-weight:550;line-height:1.5;color:#637089;margin-top:3px}
+.heading-main{display:block;font-weight:750}
+.sub{display:block;color:var(--muted);font-size:10px;font-weight:400;line-height:1.45;margin-top:3px;white-space:normal}
+.pair{white-space:nowrap}
+.na{color:#9ba3b3;font-style:italic;font-size:11px;font-weight:400;white-space:nowrap}
+.not-supplied{color:#a46c14;font-size:10px;font-weight:500;white-space:normal;display:inline-block;line-height:1.4;max-width:90px}
+.positive{color:#177c51;font-weight:700}.negative{color:#b65021;font-weight:700}
+.reference-value{color:var(--ink)}
+.summary-table{min-width:1180px;table-layout:fixed}
+.summary-table thead tr:first-child th{font-weight:750}
+.summary-table thead tr:nth-child(2) th{padding-top:9px;padding-bottom:9px}
+.summary-table thead tr:nth-child(2) th:not(:last-child){border-right:1px solid #e2dff0}
+.summary-table tbody td:nth-child(3),.summary-table tbody td:nth-child(7),.summary-table tbody td:nth-child(9),.summary-table tbody td:nth-child(11){border-right:1px solid #edf0f6}
+.summary-table td{padding:10px 6px;font-size:12px}
+.matrix{min-width:890px;table-layout:auto}
+.matrix th:first-child,.matrix td:first-child{width:auto;min-width:100px}
+.matrix td{padding:9px 10px}
+.matrix th:not(:first-child),.matrix td:not(:first-child){min-width:89px}
+.bank-table{min-width:1250px;table-layout:fixed}
+.bank-table th{font-size:10.5px;line-height:1.5;padding:10px 7px}
+.bank-table td{padding:10px 7px;font-size:12px}
+.bank-table .sub{font-size:9.5px;line-height:1.4}
+.footnote,.inline-note{padding:9px 12px;background:#f3f6fc;border-radius:8px;color:#54637c;font-size:11px;line-height:1.6;margin-top:10px}
+.inline-note{background:#fff5e8;color:#94520b;margin-top:0;margin-bottom:14px}
+.table-hint{margin:6px 0 0;font-size:10px;color:var(--muted)}
+.legend{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:12px}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;background:#7d8ca8}.dot.blue{background:#7195d5}.dot.amber{background:#d6a257}
+details{background:white;border:1px solid var(--line);border-radius:13px;padding:15px 18px;margin:17px 0;scroll-margin-top:175px;box-shadow:0 6px 17px #12274605}
+summary{font-size:12px;font-weight:700;cursor:pointer}
+details .content{padding-top:15px}
+.coverage{min-width:900px}.coverage td,.coverage th{text-align:left;white-space:normal;line-height:1.6}.coverage td:first-child{position:static;min-width:170px}
+.status{font-size:11px;font-weight:650}.status.pass{color:var(--green)}.status.reference{color:#37679d}.status.gap{color:var(--amber)}
+code,pre{font-family:Consolas,monospace}
+pre{background:#f6f7fb;border:1px solid var(--line);padding:15px;border-radius:8px;overflow:auto;font-size:12px;white-space:pre-wrap;color:#253855;line-height:1.6}
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.check-list{margin:8px 0 0;padding-left:20px;color:var(--muted);font-size:12px}.check-list li{margin:8px 0}.check-list strong{color:var(--ink)}
+.error{color:#a52a2a;font-size:12px;padding:8px 0;white-space:pre-wrap}
+footer{padding-top:8px;padding-bottom:30px;display:flex;justify-content:space-between;gap:20px;font-size:11px;color:var(--muted)}
+dialog{border:0;padding:0;background:white;border-radius:14px;width:min(1280px,97vw);max-width:97vw;max-height:92vh;color:var(--ink);box-shadow:0 25px 110px #02091770}
+dialog::backdrop{background:#172139ab}
+.modal-shell{display:flex;flex-direction:column;max-height:92vh;overflow:hidden}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:none;padding:13px 20px;background:var(--accent);color:white}
+.modal-head .eyebrow{display:none}
+.modal-head h2{color:white;font-size:17px;font-weight:700;line-height:1.5;letter-spacing:normal}
+.modal-head p{color:white;opacity:.85;font-size:11px;line-height:1.5;margin-top:0}
+.modal-actions{display:flex;align-items:center;gap:8px;flex:none}
+.modal-head .btn,.close{background:transparent;border:1px solid #ffffff73;color:white;border-radius:8px;font-size:13px;font-weight:700;line-height:1.5;padding:8px 10px}
+.modal-head .btn:hover,.close:hover{background:#ffffff16;border-color:white}
+.close{width:auto;height:auto;white-space:nowrap}
+.modal-body{padding:16px 19px;overflow:auto}
+.modal-body .scroll{max-height:none;overflow-x:auto;overflow-y:hidden}
+.modal-body tbody td:first-child,.modal-body thead tr:first-child>th:first-child{text-align:center}
+.audit-table{min-width:1450px;table-layout:auto;white-space:nowrap}
+.audit-table th{font-family:inherit;font-size:11px;font-weight:700;line-height:1.5;white-space:nowrap;border-right:0;padding:10px 8px}
+.audit-table th:last-child{border-right:0}
+.audit-table td{font-family:inherit;font-size:12px;line-height:1.5;white-space:nowrap;padding:9px 10px}
+.audit-table td:first-child{min-width:48px;text-align:center}
+.audit-table td:nth-child(2),.audit-table td:nth-child(5),.audit-table td:nth-child(8),.audit-table td:nth-child(10),.audit-table td:nth-child(12){border-right:0}
+.audit-table .time{display:inline;white-space:nowrap;font:inherit;color:inherit;margin:0}
+.audit-table .field{font-family:inherit;font-size:12px;font-weight:400;line-height:1.5;white-space:nowrap}
+.popup-threshold{min-width:1100px;table-layout:auto;white-space:nowrap}
+.popup-threshold td{font-size:12px;line-height:1.5;padding:9px 10px}
+.popup-efc{min-width:1500px}
+.modal-kpis{display:flex;flex-wrap:wrap;gap:18px 30px;padding:5px 3px 0;margin:10px 0 16px}
+.modal-kpis label{font-size:11px;color:var(--muted);display:block;margin-bottom:3px}.modal-kpis strong{font-size:20px;line-height:1.4;font-weight:750}
+.dataset-message{padding:9px 12px;margin:10px 0 0;border-radius:8px;background:#f3f6fc;color:#54637c;font-size:11px;line-height:1.5}
+.dataset-message+.scroll{margin-top:0}
+.dataset-message:first-child{margin-top:10px}
+.dataset-message.amber{background:#fff5e8;color:#94520b}
+.reporting-no{color:var(--muted);font-size:11px}.source-line{font-size:11px;margin:10px 0;color:var(--muted)}
+.policy-list{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.screen-reader{position:absolute;left:-10000px}button[disabled]{cursor:default;opacity:.5}.empty-state{padding:30px;color:var(--muted);text-align:center}
+.site-attention{background:#fff0ee;color:#9f4639;padding:5px 8px;border-radius:5px;font-size:10px}
+input[type=file]{display:none}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.toolbar .spacer{display:none}.toolbar{align-items:end;gap:9px}.help-grid{grid-template-columns:1fr}.page-header{position:static}}
+@media(max-width:700px){header,.toolbar,main,footer{padding-left:14px;padding-right:14px}header{align-items:flex-start;padding-top:15px;gap:12px}h1{font-size:19px;line-height:1.35}header p{font-size:11px}.badge{white-space:normal;font-size:10px}header>.badge{max-width:125px;flex:none}.kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.kpi{padding:13px;min-height:102px}.kpi:last-child{grid-column:span 2}.kpi strong{font-size:24px}.section-head{padding:13px 12px;gap:8px}.section-body{padding:12px}.section-head h2{font-size:15px}.section-head p{font-size:11px}.modal-head{padding:12px;align-items:flex-start;gap:10px}.modal-head h2{font-size:15px}.modal-actions{gap:5px}.modal-head .btn{display:none}.modal-body{padding:12px}.modal-body .scroll{max-height:62vh}.modal-kpis{gap:12px 20px}.modal-kpis strong{font-size:17px}dialog{width:98vw;max-width:98vw;max-height:96vh;border-radius:11px}.modal-shell{max-height:96vh}footer{flex-direction:column}.notice{font-size:11px}.toolbar{gap:9px}.control select{max-width:calc(100vw - 28px)}details,.section{scroll-margin-top:12px}}
+@media print{.page-header,.toolbar,.notice,.legend,footer,.review-only{display:none}body{background:white;font-size:10px}main{padding:0;max-width:none}.kpis{display:none}.section{break-inside:avoid;box-shadow:none;border-radius:4px;margin:0 0 12px}.section-head{padding:8px 10px}.section-body{padding:7px}.scroll{overflow:visible;max-height:none!important}table{min-width:0!important;font-size:8px}th,td{padding:5px!important}.badge{font-size:8px}.footnote,.inline-note{font-size:9px;padding:6px}body:has(dialog[open]) main{display:none}dialog[open]{position:static;max-width:none;width:100%;max-height:none;box-shadow:none}.modal-shell,.modal-body{max-height:none;overflow:visible}.modal-head{background:white;color:var(--ink);border-bottom:1px solid var(--line)}.modal-head h2,.modal-head p,.modal-head .eyebrow{color:var(--ink)}.close,.modal-actions{display:none}.audit-table th,.audit-table td{font-size:7px}.audit-table .time{font-size:7px}}
+
+
+/* Approved V2.1 heading wrapping and section 08 popup fit only. */
+#section-8 .bank-table th,#section-8 .matrix th{white-space:normal;overflow-wrap:normal}
+.popup-efc{min-width:1100px}
+.popup-efc th{white-space:normal;overflow-wrap:normal}
+
+/* Approved V2.2.1 sections 03-07 popup layout only. */
+.popup-extrema{min-width:1100px}
+.popup-extrema th{white-space:normal;overflow-wrap:normal}
+</style>
+<script>document.documentElement.dataset.hosted='true';</script><style>html:not([data-rendered]) body{visibility:hidden}</style><style>#dataset,#site,#show-sql,#import,#file-input,#coverage-panel,#sql-panel{display:none!important}.control:has(#dataset),.control:has(#site){display:none!important}</style><style id="host-scroll-layout">html{overflow-y:hidden;overflow-x:auto}body>header{display:none!important}:root{--ce-host-top:0px;--ce-host-height:100vh}dialog{inset:auto!important;position:fixed!important;left:50%!important;top:calc(var(--ce-host-top) + var(--ce-host-height)/2)!important;transform:translate(-50%,-50%);margin:0!important;max-height:calc(var(--ce-host-height) - 32px)}
+.page-header>header{display:none!important}.page-header{position:static;box-shadow:none}.modal-shell,dialog{max-height:calc(var(--ce-host-height)*.92)}.modal-body .scroll{max-height:calc(var(--ce-host-height)*.62)}@media(max-width:700px){.modal-shell,dialog{max-height:calc(var(--ce-host-height)*.96)}}</style><style id="compact-host-layout">.page-header{display:none!important}</style><style id="fine-tuning-403">#source-notice{display:none!important}main#app{padding-top:0!important}.modal-body .scroll{max-height:none!important;overflow-y:auto}.modal-shell,dialog{max-height:calc(var(--ce-host-height) - 16px)}</style></head>
+<body>
+<div class="page-header">
+<header><div><h1>CE RMS | Battery BMS Monitoring</h1><p class="muted small">BMS output review · Mockup V4.1 · API V2.0.1 · Standalone interactive report</p></div><span id="verified-badge" class="badge green">Seven-day reference verified</span></header>
+<div class="toolbar" aria-label="Report controls">
+ <label class="control">Reporting window <select id="dataset"><option value="seven">11–17 Oct 2026 · 7 days</option><option value="fourteen">4–17 Oct 2026 · 14 days</option></select></label>
+ <label class="control">Site <select id="site"><option value="all">All four sites</option></select></label>
+ <label class="control">SOH summary basis <select id="soh-basis"><option value="any">Any breach in window</option><option value="latest">Latest valid reading</option></select></label>
+ <span class="spacer"></span><button class="btn" id="show-sql">Full live detail / SQL</button><button class="btn" id="import">Load full API result</button><button class="btn" id="print">Print</button><input id="file-input" type="file" accept=".json,.csv,.txt">
+</div>
+</div>
+<main id="app">
+ <div id="source-notice" class="notice"></div><div id="import-error" class="error" role="status" hidden></div>
+ <div id="kpis" class="kpis"></div>
+ <div id="sections"></div>
+ <details id="coverage-panel" class="review-only"><summary>Output completeness and verification — what is confirmed, and what is still missing</summary><div id="coverage-content" class="content"></div></details>
+ <details id="sql-panel" class="review-only"><summary>Get complete live popup detail and load it into this page</summary><div class="content"><div class="help-grid"><div><p class="small">The earlier review scripts returned compact checks. To verify every live popup timestamp, tie count and endpoint, run this read-only query for the selected reporting window. Copy/export the whole result and use <strong>Load full API result</strong> above. JSON, one-column SQL-result CSV and pasted-text exports are supported.</p><pre id="export-sql"></pre><button class="btn primary" id="copy-sql">Copy query</button><span class="small muted" id="copy-status" role="status"></span></div><div><h3 style="margin-top:0">Reading this review</h3><ul class="check-list"><li><strong>Live:</strong> values present in your actual Supabase response.</li><li><strong>Excel reference:</strong> seven-day detail reconstructed from the original workbook, independently checked against local SQL; the compact live export omitted those fields.</li><li><strong>Not supplied:</strong> the live test export omitted this field. It does not mean the sensor is missing.</li><li><strong>N/A:</strong> there are no valid observations, the dependent measurement is unavailable, or the required shared cache was not supplied. See the cell tooltip.</li><li><strong>BMS Data Availability:</strong> requires the matching shared Data Health cache. No percentage has been invented from measurement counts.</li><li>The SOH selector previews the two bases still offered by the master. It does not approve or change a production policy.</li></ul></div></div></div></details>
+</main>
+<footer><span>All measurement timestamps are UTC. Numerical classification uses full precision; displayed values are rounded.</span><span id="footer-source"></span></footer>
+<dialog id="popup" aria-labelledby="popup-title"><div class="modal-shell"><div class="modal-head"><div><div id="popup-eyebrow" class="eyebrow"></div><h2 id="popup-title"></h2><p id="popup-subtitle"></p></div><div class="modal-actions"><button class="btn" id="print-popup" hidden>Print popup</button><button class="close" aria-label="Close popup" id="close-popup">× Close</button></div></div><div class="modal-body" id="popup-body"></div></div></dialog>
+<script id="review-data" type="application/json">{"seven":{},"fourteen":{},"excel":{}}</script>
+<script>
+'use strict';
+const DATA=JSON.parse(document.getElementById('review-data').textContent);
+const $=id=>document.getElementById(id);
+const state={dataset:'seven',site:'all',soh:'any',imports:{},importDifferences:{},lastTrigger:null};
+const datasets={seven:structuredClone(DATA.seven),fourteen:structuredClone(DATA.fourteen)};
+const NA='<span class="na" title="No valid observation or dependent input available">N/A</span>';
+const NS='<span class="not-supplied" title="This field was omitted from the supplied live test export">Not supplied</span>';
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isNum=v=>typeof v==='number'&&Number.isFinite(v);
+const number=(v,d=0)=>v===undefined?NS:v===null||!isNum(v)?NA:`<span title="Source value: ${esc(v)}">${new Intl.NumberFormat('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v)}</span>`;
+const plain=(v,d=0)=>isNum(v)?new Intl.NumberFormat('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d}).format(v):'N/A';
+const pair=(a,b,da=1,db=1)=>a===undefined&&b===undefined?NS:a===null&&b===null?NA:`<span class="pair">${number(a,da)} / ${number(b,db)}</span>`;
+const sumKnown=vals=>{const a=vals.filter(isNum);return a.length?a.reduce((x,y)=>x+y,0):null};
+const rangeLabel=()=>window.CEHostRange||'Reporting window';
+const current=()=>datasets[state.dataset];
+const allSites=()=>current().sites;
+const sites=()=>allSites().filter(s=>state.site==='all'||s.site_id===state.site);
+const bats=s=>s.batteries||s.battery_checks||[];
+const statEmpty=()=>({valid_count:0,min:null,max:null,min_utc:null,max_utc:null,min_ties:0,max_ties:0,first:null,last:null,first_utc:null,last_utc:null,observed_delta:null});
+const hasFullMetrics=b=>['temperature','soc','soh','voltage','cycles'].every(k=>b.metrics?.[k]&&Object.keys(statEmpty()).every(p=>Object.hasOwn(b.metrics[k],p)));
+const fieldName=(metric,slot)=>({temperature:`BATT_ENVTEMP${slot}`,soc:`BATT_SOC_${String(slot).padStart(2,'0')}`,soh:`BATT_SOH${slot}`,voltage:`BATT_VOLT${slot}`,cycles:`BATT${slot}_CYCLES`}[metric]);
+function metric(s,b,key){
+ if(b.metrics&&b.metrics[key])return {...b.metrics[key],_source:'live',_label:'Complete live API measurement'};
+ const count=key==='cycles'?b.cycles?.valid_count:b[key+'_valid_count'];
+ let live={valid_count:count};
+ if(key==='voltage')live={...live,min:b.voltage_min,max:b.voltage_max};
+ if(key==='cycles')live={...live,min:b.cycles?.observed_min,max:b.cycles?.observed_max,first:b.cycles?.first,last:b.cycles?.last,first_utc:b.cycles?.first_utc,last_utc:b.cycles?.last_utc,observed_delta:b.cycles?.raw_delta};
+ if(count===0)return {...statEmpty(),_source:'live-empty',_label:'Live export confirms no valid observations'};
+ const ref=DATA.excel[s.site_id]?.[String(b.slot)]?.[key];
+ if(state.dataset==='seven'&&ref){
+  const known=Object.fromEntries(Object.entries(live).filter(([k,v])=>v!==undefined));
+  return {...ref,...known,_source:'excel',_label:key==='cycles'?'Live counter evidence with Excel extrema timestamps and tie counts':key==='voltage'?'Live voltage min/max with Excel audit timestamps and endpoints':'Original seven-day Excel reference; full metric detail was omitted from live export'};
+ }
+ return {...live,_source:'partial',_label:'Partial live export; unreturned fields are marked Not supplied'};
+}
+function stamp(v){
+ if(v===undefined)return NS;if(v===null)return NA;
+ const t=new Date(/[Zz]|[+-]\d\d:\d\d$/.test(v)?v:v+'Z');if(Number.isNaN(t.valueOf()))return NS;
+ const text=t.toISOString().replace('T',' ').replace(/\.000Z$/,'').replace(/Z$/,'');
+ return `<span class="timestamp" title="${esc(v)} · UTC">${text}</span>`;
+}
+const cacheNA=()=>'<span class="na" title="Matching shared Data Health cache was not supplied; no availability percentage has been inferred">N/A</span>';
+function link(s,section){return `<button class="site-link" data-section="${section}" data-site="${esc(s.site_id)}" aria-label="Open section ${section} battery popup for ${esc(s.site_id)}">${esc(s.site_id)}</button>`}
+function policyValue(s,key){const v=(s.policies||[]).map(p=>p[key]);return v.length&&v.every(x=>x===v[0])?v[0]:undefined}
+function globalThresholds(){
+ const p=sites().flatMap(s=>s.policies||[]);if(!p.length)return null;
+ const first=p[0];return p.every(x=>JSON.stringify(x.temperature)===JSON.stringify(first.temperature)&&x.soc_min_pct===first.soc_min_pct&&x.soc_max_pct===first.soc_max_pct&&x.soh_min_pct===first.soh_min_pct)?first:null;
+}
+function limits(){const p=globalThresholds();return p?{
+ temp:[`L1 · &gt;${plain(p.temperature.L1)}–${plain(p.temperature.L2)}°C`,`L2 · &gt;${plain(p.temperature.L2)}–${plain(p.temperature.L3)}°C`,`L3 · &gt;${plain(p.temperature.L3)}–${plain(p.temperature.L4)}°C`,`L4 · &gt;${plain(p.temperature.L4)}°C`],
+ soc:[`&lt; ${plain(p.soc_min_pct)}%`,`&gt; ${plain(p.soc_max_pct)}%`],dod:[`&gt; ${plain(p.dod_max_pct)}%`,`&lt; ${plain(p.dod_min_pct)}%`],soh:`&lt; ${plain(p.soh_min_pct)}%`}:{temp:['L1 configured band','L2 configured band','L3 configured band','L4 configured band'],soc:['SOC low','SOC high'],dod:['DoD high','DoD low'],soh:'Configured minimum'};}
+function block(num,title,description,badge,table,tail=''){
+ return `<section class="section" id="section-${num}"><div class="section-head"><div><h2>${String(num).padStart(2,'0')} · ${title}</h2><p>${description}</p></div>${badge}</div><div class="section-body">${table}${tail}</div></section>`;
+}
+const scroll=(html,cls='',widths=null)=>`<div class="scroll"><table class="${cls}">${widths?'<colgroup>'+widths.map(w=>`<col style="width:${100*w/widths.reduce((a,b)=>a+b,0)}%">`).join('')+'</colgroup>':''}${html}</table></div>`;
+function tempDisplay(v){return !v||v.affected_batteries===null?NA:`<span class="pair">${number(v.affected_batteries)} batt / ${number(v.average_hours_per_affected_battery,1)} hrs</span>`}
+function occDisplay(v){return !v||v.affected_batteries===null?NA:`<span class="pair">${number(v.affected_batteries)} batt / ${number(v.occurrences)}</span>`}
+function renderSummary(){
+ const l=limits();const head=`<thead><tr><th rowspan="3">Site ID</th><th rowspan="3">Batt<br>installed</th><th rowspan="3">BMS data<br>availability</th><th colspan="8">Number of batteries that breached the threshold</th><th rowspan="3">SOH<span class="heading-unit">Batteries ${l.soh}</span><span class="sub">${state.soh==='any'?'Any in window':'Latest reading'}</span></th><th rowspan="3">Cycles<br>consumed</th></tr><tr><th colspan="4"><span class="heading-main">Temperature</span><span class="heading-unit">Batteries / avg hrs per affected battery</span></th><th colspan="2"><span class="heading-main">SOC</span><span class="heading-unit">Batteries / occurrences</span></th><th colspan="2"><span class="heading-main">DoD</span><span class="heading-unit">Batteries / occurrences</span></th></tr><tr>${l.temp.map(x=>`<th>${x}</th>`).join('')}${l.soc.map(x=>`<th>${x}</th>`).join('')}${l.dod.map(x=>`<th>${x}</th>`).join('')}</tr></thead>`;
+ const body=sites().map(s=>`<tr><td>${link(s,1)}</td><td>${number(s.installed_batteries)}</td><td>${cacheNA()}</td>${[1,2,3,4].map(i=>`<td>${tempDisplay(s.summary.temperature['L'+i])}</td>`).join('')}<td>${occDisplay(s.summary.soc.low)}</td><td>${occDisplay(s.summary.soc.high)}</td><td>${occDisplay(s.summary.dod.high)}</td><td>${occDisplay(s.summary.dod.low)}</td><td>${number(s.summary.soh[state.soh==='any'?'any_below_batteries':'latest_below_batteries'])}</td><td>${number(s.summary.cycles_used)}</td></tr>`).join('');
+ return block(1,'Threshold Violation Summary','Click anywhere on a site row to inspect all eight battery slots. Temperature bands are exclusive; upper boundaries belong to the lower band.','<span class="badge green">Live summary</span>',scroll(head+`<tbody>${body}</tbody>`,'summary-table',[7,5,7,10.5,10.5,10.5,10.5,6,6,6,6,7,6]),'<div class="footnote">One occurrence = one qualifying battery reading, not a continuous episode. Average temperature hours divide by affected batteries only. SOC and mirrored DoD are not independent events.</div>');
+}
+const METRICS={3:{key:'temperature',title:'Battery Temperature — Maximum observed (°C)',precision:1,desc:'Independent battery maxima. Popup includes minimum, maximum, UTC timestamps, ties and chronological endpoints.'},4:{key:'soc',title:'Battery SOC — Minimum / Maximum (%)',precision:1,desc:'Independent battery extrema. DoD is derived from SOC, not a separate sensor.'},5:{key:'soh',title:'Battery SOH — Minimum / Maximum (%)',precision:2,desc:'Two decimal places. First-to-last observed change is not a modeled degradation forecast.'},6:{key:'voltage',title:'Battery Voltage — Minimum / Maximum (V)',precision:1,desc:'Dedicated BATT_VOLT1–8 readings only. No substitution of site voltage in this matrix.'},7:{key:'cycles',title:'BMS-Reported Cycles — Used / Latest cumulative counter',precision:0,desc:'Used is trustworthy observed counter span; resets make usage unavailable. Latest is the last valid cumulative counter.'}};
+function metricBadge(num){if(num===7)return '<span class="badge green">Live counters</span>';if(num===6)return '<span class="badge green">Live min / max</span>';const full=sites().every(s=>bats(s).every(b=>b.metrics?.[METRICS[num].key]));return full?'<span class="badge green">Full live detail</span>':state.dataset==='seven'?'<span class="badge blue">Excel reference detail</span>':'<span class="badge amber">Full export needed</span>'}
+function renderMatrix(num){const def=METRICS[num];
+ const body=sites().map(s=>`<tr><td>${link(s,num)}</td>${Array.from({length:8},(_,i)=>{const b=bats(s).find(b=>b.slot===i+1);if(!b)return `<td>${NS}</td>`;const m=metric(s,b,def.key);let val=num===3?number(m.max,1):num===7?pair(b.cycles?.used,b.cycles?.last,0,0):pair(m.min,m.max,def.precision,def.precision);return `<td title="${esc(m._label)}" class="${m._source==='excel'?'reference-value':''}">${val}</td>`}).join('')}</tr>`).join('');
+ return block(num,def.title,def.desc+' Click anywhere on a site row to open its eight-battery popup.',metricBadge(num),scroll(`<thead><tr><th>Site</th>${Array.from({length:8},(_,i)=>`<th>B${i+1}</th>`).join('')}</tr></thead><tbody>${body}</tbody>`,'matrix'));
+}
+function currentCoverage(s){const bs=bats(s).filter(b=>b.bms_reporting);if(!bs.length)return '<span class="reporting-no">N/A · no BMS readings</span>';const n=bs.filter(b=>b.discharge?.current_valid_count>0).length;return `<span class="${n===bs.length?'positive':'negative'}">${n} / ${bs.length} reporting slots</span><span class="sub">${n===bs.length?'Channels present':'Incomplete channels'}</span>`}
+function renderEnergy(){
+ const bankHead=['Site','Total measured<br>bank discharge<span class="heading-unit">kWh</span>','Configured<br>bank capacity<span class="heading-unit">Ah</span>','Assumed bank<br>nominal energy<span class="heading-unit">kWh</span>','Bank discharge<br>EFC','BMS counter<br>usage sum','Reporting<br>BMS slots','Counter<br>contributors','Mean BMS usage<br>per contributor','BMS mean<br>− bank EFC','Bank − measured<br>modules<span class="heading-unit">kWh</span>','Module-current<br>evidence'];
+ const bank=scroll(`<thead><tr>${bankHead.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${sites().map(s=>{const e=s.discharge;return `<tr><td>${link(s,8)}</td><td>${number(e.bank_measured_kwh,1)}</td><td>${number(policyValue(s,'bank_capacity_ah'))}</td><td>${number(e.bank_nominal_kwh,1)}</td><td>${number(e.bank_efc,1)}</td><td>${number(e.bms_counter_sum,1)}</td><td>${number(s.reporting_battery_slots)}</td><td>${number(e.bms_counter_contributors)}</td><td>${number(e.bms_counter_mean,1)}</td><td>${number(e.bms_mean_minus_bank_efc,1)}</td><td>${number(e.bank_minus_modules_kwh,1)}</td><td>${currentCoverage(s)}</td></tr>`}).join('')}</tbody>`,'bank-table',[6,9,6.5,8.5,7,7,6,7,8,8,9,12]);
+ const matrix=scroll(`<thead><tr><th>Site</th>${Array.from({length:8},(_,i)=>`<th>B${i+1} · EFC / BMS</th>`).join('')}</tr></thead><tbody>${sites().map(s=>`<tr><td>${link(s,8)}</td>${bats(s).map(b=>`<td>${pair(b.discharge?.efc,b.cycles?.used,1,1)}</td>`).join('')}</tr>`).join('')}</tbody>`,'matrix');
+ return block(8,'All Battery Discharge → Estimated Cycles vs BMS','Every valid negative current is integrated independently. Click anywhere on a site row for all eight battery slots.','<span class="badge green">Live energy and counters</span>',`<div class="inline-note">Discharge kWh = max(0, −current) × positive measured sys_volt × configured sample hours / 1000. Bank nominal energy uses configured bank Ah × <strong>assumed 51.8 V</strong> / 1000; module EFC uses configured per-module kWh. Module energy uses sys_volt as a common voltage proxy. Discharge-only EFC is not a manufacturer counter or warranty assessment.</div><h3>Portfolio / site comparison</h3>${bank}<div class="table-hint">On smaller screens, scroll the table sideways for all comparison columns.</div><h3>Battery-level comparison — click any site row to inspect all eight slots</h3>${matrix}`,'<div class="footnote">Channel presence does not mean complete timestamp coverage or verified physical inventory. Residual bank energy is never distributed to missing individual-current channels. Comparison direction is BMS minus EFC.</div>');
+}
+function renderKpis(){
+ const ss=sites();const hs=ss.flatMap(s=>Object.values(s.summary.temperature).map(v=>v.measured_battery_hours));
+ const cards=[['Sites in selected scope',ss.length,0,'Configured site records'],['BMS-reporting slots',sumKnown(ss.map(s=>s.reporting_battery_slots)),0,'Telemetry evidence, not physical inventory'],['Temperature breach exposure',sumKnown(hs),2,'Measured battery-hours across L1–L4'],['Low SOC occurrences',sumKnown(ss.map(s=>s.summary.soc.low.occurrences)),0,'Qualifying battery readings'],['BMS counter usage',sumKnown(ss.map(s=>s.summary.cycles_used)),0,'Sum of manufacturer counter units']];
+ $('kpis').innerHTML=cards.map(([label,value,d,note])=>`<div class="kpi"><label>${label}</label><strong>${number(value,d)}</strong><small>${note}</small></div>`).join('');
+}
+function renderCoverage(){
+ const full=sites().every(s=>bats(s).every(hasFullMetrics));
+ const detail=full?'<span class="status pass">Full live measurement objects loaded</span>':state.dataset==='seven'?'<span class="status reference">Excel detail supplied; compact live export omits full audit fields</span>':'<span class="status gap">Not supplied by compact live export</span>';
+ const independent=state.dataset==='seven'?'Exported live fields agree with original Excel (294 checks). Missing full audit fields use the independent Excel extraction.':'286 internal arithmetic/structure checks passed. The Excel workbook does not cover the added week; no independent fourteen-day source claim is made.';
+ const rows=[['01 · Summary / threshold popup','Affected battery counts; mean hours; occurrences; counters; per-slot thresholds','<span class="status pass">Present in live export</span>'],['01 · BMS Data Availability','Site and battery availability percentages','<span class="status gap">Missing shared Data Health cache — N/A</span>'],['03 · Temperature','Max matrix; min/max, UTC times/ties, first/last and delta popup',detail],['04 · SOC','Min/max matrix and full observation popup',detail],['05 · SOH','Min/max matrix and full observation popup',detail],['06 · Voltage','Dedicated min/max and valid counts','<span class="status pass">Present in live export; known no-reading slots remain N/A</span>'],['06 · Voltage audit popup','Min/max times/ties, first/last and observed delta',detail],['07 · Counter','Used/latest, min/max, first/last/times, reset and counts','<span class="status pass">Present in live export</span>'],['07 · Counter extrema audit','Minimum/maximum timestamps and tie counts',detail],['08 · Discharge comparison / popup','Energy, capacities, EFC, counter endpoints, denominators, reset, residual','<span class="status pass">Present in live export</span>']];
+ $('coverage-content').innerHTML=`<p class="small" style="margin-bottom:13px">${independent}</p>${scroll(`<thead><tr><th>Section</th><th>Information required by mockup</th><th>Evidence in current view</th></tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`,'coverage')}<ul class="check-list"><li><strong>All seven mandatory sections and all site popups are implemented.</strong> Section 02 is not introduced.</li><li>Complete live confirmation of the omitted popup fields requires the full API result. The SQL function defines them, but defining a field is different from verifying its live value.</li><li>Fourteen-day rows: 1,344 per site. Seven-day rows: 672 per site. Complete timestamps do not imply complete battery or energy-input measurements.</li><li>The SOH display basis remains a review choice. Both any-breach and latest-below populations are provided by the API.</li><li>Configured inventory is eight at every site. LAG-2 has six reporting slots; empty slots do not prove absent physical batteries.</li></ul>`;
+}
+function exportSql(){const start=state.dataset==='seven'?'2026-10-11':'2026-10-04';return `-- Read only: complete live response for every required popup.\nSELECT jsonb_pretty(\n  public.get_rms_bms_output_v2_tz(\n    '${start}T00:00:00Z'::timestamptz,\n    '2026-10-18T00:00:00Z'::timestamptz,\n    ARRAY['ABJ-1','ABJ-2','LAG-1','LAG-2']::text[]\n  )\n) AS bms_v2_full_result;`}
+function render(){
+ const ss=sites();const full=ss.every(s=>bats(s).every(hasFullMetrics));
+ $('verified-badge').textContent=state.dataset==='seven'?'7-day exported values · Excel verified':'14-day live result · internal checks passed';
+ $('verified-badge').className='badge '+(state.dataset==='seven'?'green':'blue');
+ if(state.importDifferences[state.dataset]>0){$('verified-badge').textContent='Imported values differ from Excel — review needed';$('verified-badge').className='badge amber';}
+ const detail=full?'Full live metric objects are loaded.':state.dataset==='seven'?'Blue-labelled metric detail comes from the original Excel workbook because the live review export trimmed it.':'Amber “Not supplied” values are missing from the review export, not proof of missing sensor readings.';
+ const review=state.imports[state.dataset];
+ $('source-notice').innerHTML=`<strong>${rangeLabel()}.</strong> Summary, counters and discharge are from your live API response. ${detail} BMS availability is N/A because the shared Data Health cache was not supplied.${review?`<br><strong>Imported live result:</strong> ${esc(review)}`:''}`;
+ $('sections').innerHTML=renderSummary()+[3,4,5,6,7].map(renderMatrix).join('')+renderEnergy();
+ for(const row of $('sections').querySelectorAll('tbody tr')){const link=row.querySelector('button[data-section]');if(!link)continue;row.classList.add('clickable-row');row.dataset.popupSection=link.dataset.section;row.dataset.popupSite=link.dataset.site;row.tabIndex=0;row.setAttribute('aria-haspopup','dialog');row.setAttribute('aria-label',`Open section ${link.dataset.section} detail for ${link.dataset.site}, all eight battery slots`);row.title='Click anywhere on this row to open B1–B8 details';}
+ renderKpis();renderCoverage();$('export-sql').textContent=exportSql();$('copy-status').textContent='';
+ $('footer-source').textContent=`Original compact test: ${plain(current().elapsed_ms/1000,2)} s · ${current().metadata.version} · ${rangeLabel()}`;
+}
+function policyStrip(s){return `<div class="policy-list">${(s.policies||[]).map(p=>`<span class="badge">Sample: ${plain(p.sample_seconds/60)} min</span><span class="badge">SOC ${plain(p.soc_min_pct)}–${plain(p.soc_max_pct)}%</span><span class="badge">SOH min ${plain(p.soh_min_pct)}%</span>`).join('')}</div>`}
+function summaryPopup(s){const l=limits();
+ const header=`<thead><tr><th rowspan="2">Battery</th><th rowspan="2">BMS data<br>availability</th><th colspan="4">Temperature · hours (occurrences)</th><th colspan="2">SOC · occurrences</th><th colspan="2">DoD · occurrences</th><th rowspan="2">SOH ${l.soh}<br>0 / 1 per slot</th><th rowspan="2">Cycles<br>consumed</th></tr><tr>${l.temp.map(x=>`<th>${x}</th>`).join('')}${l.soc.map(x=>`<th>${x}</th>`).join('')}${l.dod.map(x=>`<th>${x}</th>`).join('')}</tr></thead>`;
+ const rows=bats(s).map(b=>{const sh=state.soh==='any'?(b.soh?.low_occurrences==null?null:b.soh.low_occurrences>0):b.soh?.latest_below;return `<tr><td>B${b.slot}</td><td>${cacheNA()}</td>${[1,2,3,4].map(i=>{const v=b.temperature?.['L'+i];return `<td>${v?.occurrences==null?NA:`${number(v.measured_hours,1)} <span class="muted small">(${plain(v.occurrences)})</span>`}</td>`}).join('')}<td>${number(b.soc?.low_occurrences)}</td><td>${number(b.soc?.high_occurrences)}</td><td>${number(b.dod?.high_occurrences)}</td><td>${number(b.dod?.low_occurrences)}</td><td>${sh==null?NA:sh?'1':'0'}</td><td>${number(b.cycles?.used)}</td></tr>`}).join('');
+ return `${policyStrip(s)}<div class="dataset-message">Each row is one potential battery slot. Temperature shows that battery's measured breach hours; the count in brackets is qualifying readings. SOC / DoD show counts. SOH basis: ${state.soh==='any'?'any breach during the window':'latest valid reading'}. No availability percentage is inferred.</div>${scroll(header+`<tbody>${rows}</tbody>`,'popup-threshold')}<p class="footnote">No-BMS slots retain N/A evaluations. A zero requires evaluable observations and policy; missing observations are not silently counted as normal.</p>`;
+}
+function extremaPopup(s,num){const def=METRICS[num];let messages=[];
+ for(const b of bats(s)){const m=metric(s,b,def.key);messages.push(m._source)}
+ const hasExcel=messages.includes('excel'),hasPartial=messages.includes('partial');
+ let intro=hasExcel?'<div class="dataset-message">Excel-backed audit detail. The seven-day values below come from the original workbook where the compact live export omitted fields. Live counts and available counter/voltage values are retained. These omitted timestamp/tie fields are not yet independently verified from a full live API export.</div>':hasPartial?'<div class="dataset-message amber">Partial live export. Values marked Not supplied were omitted from the review query. Load the full API result to complete this popup. N/A with zero valid readings means confirmed absence of observations.</div>':'<div class="dataset-message">Complete measurement detail is present in the live API result, or the export confirms zero observations for the slot.</div>';
+ const unit={temperature:' (°C)',soc:' (%)',soh:' (%)',voltage:' (V)',cycles:''}[def.key];
+ const group={temperature:'Temp',soc:'SOC',soh:'SOH',voltage:'Voltage',cycles:'Cycles'}[def.key];
+ const head=`<thead><tr><th rowspan="2">Battery</th><th rowspan="2">Data Field</th><th colspan="2">${group}${unit}</th><th rowspan="2">Ties<br>Min/Max</th><th rowspan="2">First valid<br>Record</th><th rowspan="2">Last valid<br>Record</th><th rowspan="2">Observed<br>Delta</th><th rowspan="2">Valid Readings</th></tr><tr><th>Min</th><th>Max</th></tr></thead>`;
+ const body=bats(s).map(b=>{const m=metric(s,b,def.key);return `<tr><td>B${b.slot}${num===7&&b.cycles?.reset_detected?' · Reset':''}</td><td><span class="field">${fieldName(def.key,b.slot)}</span></td><td>${number(m.min,def.precision)}<br>${stamp(m.min_utc)}</td><td>${number(m.max,def.precision)}<br>${stamp(m.max_utc)}</td><td>${number(m.min_ties)} / ${number(m.max_ties)}</td><td>${number(m.first,def.precision)}<br>${stamp(m.first_utc)}</td><td>${number(m.last,def.precision)}<br>${stamp(m.last_utc)}</td><td>${number(m.observed_delta,def.precision)}</td><td>${number(m.valid_count)}</td></tr>`}).join('');
+ return intro+scroll(head+`<tbody>${body}</tbody>`,'audit-table popup-extrema')+`<p class="footnote">Observed delta is chronological last minus first. Ties count equal extrema; the representative timestamp is the earliest tie. All timestamps are UTC. ${num===5?'SOH change is not a degradation forecast.':''} ${num===7?'Reset flags qualify counter usage separately from raw changes.':''}</p>`;
+}
+function energyPopup(s){const e=s.discharge;
+ const intro=`<div class="dataset-message">Measured bank discharge: <strong>${number(e.bank_measured_kwh,1)} kWh</strong> · Measured module sum: <strong>${number(e.measured_modules_kwh,1)} kWh</strong> · Bank − modules: <strong>${number(e.bank_minus_modules_kwh,1)} kWh</strong> · Bank EFC / mean BMS usage: <strong>${pair(e.bank_efc,e.bms_counter_mean,1,1)}</strong></div>`;
+ const head='<thead><tr><th rowspan="2">Battery</th><th rowspan="2">BMS<br>Reporting</th><th colspan="4">Calculated Battery Cycles - (CBC)</th><th colspan="3">BMS Battery Cycle Reporting</th><th rowspan="2">Difference<br>BMS - CBC</th><th rowspan="2">Reset</th></tr><tr><th>Valid<br>Volt &amp; Current<br>Readings</th><th>Battery<br>Throughput kWh</th><th>Batt<br>Capacity kWh</th><th>CBC</th><th>First Counter</th><th>Last Counter</th><th>Batt Cycles<br>by BMS</th></tr></thead>';
+ const body=bats(s).map(b=>{const x=b.discharge,c=b.cycles;return `<tr><td>B${b.slot}</td><td>${b.bms_reporting?'<span class="positive">Yes</span>':'<span class="reporting-no">No observations</span>'}</td><td>${number(x.current_valid_count)} / ${number(x.current_voltage_pairs)}</td><td>${number(x.measured_kwh,1)}</td><td>${number(x.nominal_kwh,1)}</td><td>${number(x.efc,1)}</td><td>${number(c.first)}<br>${stamp(c.first_utc)}</td><td>${number(c.last)}<br>${stamp(c.last_utc)}</td><td>${number(c.used,1)}</td><td>${number(x.bms_minus_efc,1)}</td><td>${c.valid_count===0?NA:c.reset_detected?'<span class="negative">Yes</span>':'No'}</td></tr>`}).join('');
+ return `<div class="dataset-message">Bank EFC compares to mean trustworthy BMS usage (${number(e.bms_counter_contributors)} contributors). Module energy uses its own current and common measured sys_volt. Nominal bank voltage 51.8 V is assumed.</div>${intro}${scroll(head+`<tbody>${body}</tbody>`,'audit-table popup-efc')}<p class="footnote">Current readings / eligible positive-voltage pairs are distinct counts. Missing current yields N/A energy/EFC. Residual bank energy is not allocated to missing channels. Discharge-only EFC excludes charge throughput.</p>`;
+}
+
+function openPopup(siteId,num,trigger){const s=allSites().find(x=>x.site_id===siteId);if(!s)return;state.lastTrigger=trigger;
+ const title={1:'Threshold violation summary',3:'Battery temperature',4:'Battery SOC',5:'Battery SOH',6:'Battery voltage',7:'BMS-reported cycles',8:'Discharge-derived cycles vs BMS'}[num];
+ $('popup-eyebrow').textContent=`Section ${String(num).padStart(2,'0')} · ${s.site_id}`;
+ $('popup-title').textContent=`${s.site_id} — ${title}`;$('popup-subtitle').textContent=`${rangeLabel()} · battery slots B1–B8 · UTC`;
+ $('popup-body').innerHTML=num===1?summaryPopup(s):num===8?energyPopup(s):extremaPopup(s,num);
+ $('popup').showModal();$('popup').scrollTop=0;$('popup-body').scrollTop=0;for(const frame of $('popup-body').querySelectorAll('.scroll')){frame.scrollTop=0;frame.scrollLeft=0}$('close-popup').focus({preventScroll:true});
+}
+function parseCsv(text){const rows=[];let row=[],v='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){v+='"';i++}else quoted=!quoted}else if(c===','&&!quoted){row.push(v);v=''}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(v);if(row.some(x=>x.trim()))rows.push(row);row=[];v=''}else v+=c}row.push(v);if(row.some(x=>x.trim()))rows.push(row);return rows}
+function parseImport(text){text=text.replace(/^\uFEFF/,'').trim();let d;try{d=JSON.parse(text)}catch{const rows=parseCsv(text);if(rows.length<2)throw Error('Expected a complete JSON response or one-column SQL export.');d=JSON.parse(rows[1][0])}for(let i=0;i<4;i++){if(typeof d==='string'){d=JSON.parse(d);continue}if(Array.isArray(d)&&d.length===1){d=d[0];continue}if(d&&!d.sites){const key=Object.keys(d).find(k=>k.startsWith('bms_v2_'));if(key){d=d[key];continue}}break}if(!d?.sites||!d?.metadata)throw Error('This file is not a complete BMS API response.');return d}
+function compareReference(d){let compared=0,differences=0;for(const s of d.sites){for(const b of bats(s)){for(const [key,m] of Object.entries(b.metrics||{})){const ref=DATA.excel[s.site_id]?.[String(b.slot)]?.[key];if(!ref)continue;for(const prop of ['valid_count','min','max','first','last','min_ties','max_ties','observed_delta','min_utc','max_utc','first_utc','last_utc']){const a=m[prop],v=ref[prop];if(a===undefined)continue;compared++;if(a===null||v===null){if(a!==v)differences++}else if(prop.endsWith('_utc')){if(Date.parse(/[Zz]|[+-]\d\d:\d\d$/.test(a)?a:a+'Z')!==Date.parse(/[Zz]|[+-]\d\d:\d\d$/.test(v)?v:v+'Z'))differences++}else if(Math.abs(a-v)>1e-9*Math.max(1,Math.abs(v)))differences++}}}}return {compared,differences}}
+async function importFile(file){if(!file)return;try{const d=parseImport(await file.text());if(d.metadata.api!=='get_rms_bms_output_v2_tz')throw Error('Expected get_rms_bms_output_v2_tz output.');const start=Date.parse(d.metadata.start_at),end=Date.parse(d.metadata.end_at_exclusive);const key=start===Date.parse('2026-10-11T00:00:00Z')&&end===Date.parse('2026-10-18T00:00:00Z')?'seven':start===Date.parse('2026-10-04T00:00:00Z')&&end===Date.parse('2026-10-18T00:00:00Z')?'fourteen':null;if(!key)throw Error('This viewer accepts the seven-day or fourteen-day window shown in its selector. Export the matching query.');if(!d.sites.length||!d.sites.every(s=>Array.isArray(s.batteries)&&s.batteries.length===8&&s.batteries.every(hasFullMetrics)))throw Error('This is still a compact or incomplete export. Use the complete-response query shown in this page.');const merged=new Map(datasets[key].sites.map(s=>[s.site_id,s]));for(const s of d.sites)merged.set(s.site_id,s);datasets[key].sites=[...merged.values()].sort((a,b)=>a.site_id.localeCompare(b.site_id));if(key==='seven'){const c=compareReference(d);state.importDifferences[key]=c.differences;state.imports[key]=`${d.sites.length} site(s); ${c.compared} Excel metric comparisons, ${c.differences} differences. ${c.differences?'Review differences before acceptance.':'Matching supplied measurements within tolerance.'}`}else state.imports[key]=`${d.sites.length} site(s) with complete live metric objects; no independent Excel reference for the added week.`;state.dataset=key;$('dataset').value=key;state.site='all';populateSites();$('import-error').hidden=true;render()}catch(e){$('import-error').hidden=false;$('import-error').textContent=e.message}finally{$('file-input').value=''}}
+function populateSites(){const ids=allSites().map(s=>s.site_id);$('site').innerHTML='<option value="all">All four sites</option>'+ids.map(id=>`<option value="${esc(id)}">${esc(id)}</option>`).join('');if(!ids.includes(state.site))state.site='all';$('site').value=state.site}
+$('dataset').addEventListener('change',e=>{state.dataset=e.target.value;populateSites();render()});
+$('site').addEventListener('change',e=>{state.site=e.target.value;render()});
+$('soh-basis').addEventListener('change',e=>{state.soh=e.target.value;render()});
+$('sections').addEventListener('click',e=>{const row=e.target.closest('tr[data-popup-section]');if(row)openPopup(row.dataset.popupSite,Number(row.dataset.popupSection),row)});
+$('sections').addEventListener('keydown',e=>{const row=e.target.closest('tr[data-popup-section]');if(row&&e.target===row&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openPopup(row.dataset.popupSite,Number(row.dataset.popupSection),row)}});
+$('close-popup').addEventListener('click',()=>$('popup').close());
+$('popup').addEventListener('close',()=>state.lastTrigger?.focus());
+$('popup').addEventListener('click',e=>{if(e.target===$('popup')){const r=$('popup').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('popup').close()}});
+$('show-sql').addEventListener('click',()=>{$('sql-panel').open=true;$('sql-panel').scrollIntoView({behavior:'smooth',block:'start'})});
+$('copy-sql').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(exportSql());$('copy-status').textContent=' Copied.'}catch{$('copy-status').textContent=' Select and copy the query above.'}});
+$('import').addEventListener('click',()=>$('file-input').click());$('file-input').addEventListener('change',e=>importFile(e.target.files[0]));
+$('print').addEventListener('click',()=>window.print());$('print-popup').addEventListener('click',()=>window.print());
+
+// Public read-only helper for reproducible UI checks; no network or writes.
+window.BMSReview={state,datasets,openPopup,parseImport,compareReference,metric,render};
+</script>
+<script>window.CEReport={render(payload){const data=payload.data;datasets.host=data;state.dataset='host';state.site='all';state.imports={};state.importDifferences={};window.CEHostRange=payload.range;populateSites();render();$('verified-badge').textContent=payload.mode==='fixture'?'Test fixture':'Live API V2';$('source-notice').textContent=payload.range+' · '+payload.source;$('footer-source').textContent='API '+data.metadata.version+' · '+payload.range;document.documentElement.dataset.rendered='true';},inspect(){return {data:current(),state}}};</script><script type="module" src="adapter.js"></script></body>
+</html>

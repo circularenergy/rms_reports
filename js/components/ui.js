@@ -1,0 +1,4 @@
+export const n=(x,d=2)=>Number(x).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d});
+export const h=x=>n(x)+" h"; export const e=x=>n(x)+" kWh";
+export function section(t,s,b){return `<section class="section"><div class="sh"><h2>${t}</h2><div class="sub">${s}</div></div><div class="body">${b}</div></section>`}
+export function modal(title,body){document.getElementById("modal").innerHTML=`<div class="modal-bg" id="mb"><div class="modal-box"><div class="mh"><b>${title}</b><button id="mc">×</button></div><div class="mb">${body}</div></div></div>`;document.getElementById("mc").onclick=()=>document.getElementById("modal").innerHTML="";}

@@ -1,0 +1,248 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"><title>CE RMS | Data Health V1.5</title><style>
+:root{--ink:#17273a;--sub:#68788e;--line:#dfE7ef;--bg:#f4f7fb;--white:#fff;--blue:#1376c8;--red:#c74f53;--amber:#c9861c;--green:#088665}*{box-sizing:border-box}body{margin:0;font:14px/1.5 system-ui,-apple-system,Segoe UI,Arial;color:var(--ink);background:var(--bg)}header{background:#10243a;color:white;padding:17px max(22px,calc((100vw - 1480px)/2));display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}header h1{font-size:19px;margin:0}header small{color:#b8c9db}main{max-width:1480px;margin:auto;padding:22px}.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:18px;margin-bottom:17px;box-shadow:0 2px 7px #17273a06}.row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}.title{font-size:17px;font-weight:750}.muted{color:var(--sub)}.small{font-size:12px}.pill{border-radius:99px;background:#e9f3fd;color:#11649f;padding:4px 9px;font-size:11px;font-weight:650}.demo{background:#fff3d4;color:#755000}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.button,select,input[type=file]{background:#fff;border:1px solid #cbd8e4;border-radius:7px;padding:8px 11px;color:var(--ink);font:inherit}.button{cursor:pointer}.button.primary{background:#116da9;color:white;border-color:#116da9}.button:hover{filter:brightness(.96)}.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:18px 0}.kpi{background:white;border:1px solid var(--line);border-radius:12px;padding:17px;border-top:4px solid #b4c9da}.kpi:nth-child(2){border-top-color:#e3a5a5}.kpi:nth-child(3){border-top-color:#95bfc6}.kpi:nth-child(4){border-top-color:#bca8ed}.kpi .value{font-size:27px;letter-spacing:-.8px;font-weight:790;margin:9px 0 2px}.kpi .lbl{font-size:12px;color:var(--sub);font-weight:650}.kpi .meta{color:var(--sub);font-size:11px}.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.group{background:#fff;border:1px solid var(--line);border-radius:10px;text-align:left;padding:13px;cursor:pointer}.group:hover,.group.active{outline:2px solid #96c9f3}.group .pct{font-size:25px;font-weight:780}.group .subtitle{font-size:11px;color:var(--sub)}.swatch{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}.scroll{overflow:auto}table{width:100%;border-collapse:collapse;min-width:800px}th{color:#5c6e82;font-weight:690;text-align:left;background:#f7f9fc;font-size:12px;padding:11px 10px;border-bottom:1px solid var(--line)}td{border-bottom:1px solid #e9edf2;padding:9px 10px;font-size:12px}tbody tr:hover{background:#f8fbff}td button{border:0;background:none;cursor:pointer;color:#0871b8;text-align:left;font-weight:700;padding:0}.bar{background:#e9eef5;height:8px;border-radius:9px;overflow:hidden;width:100%;min-width:50px}.bar i{display:block;height:100%;border-radius:9px;background:#238fbc}.bar.low i{background:#d68d24}.bar.verylow i{background:#d35858}.number{font-variant-numeric:tabular-nums;font-weight:650}.cellscore{display:flex;align-items:center;gap:8px;min-width:100px}.cellscore .bar{flex:1}.cellscore .number{width:45px;text-align:right}.warn{background:#fffaec;border:1px solid #f0d9a8;color:#69531e;padding:11px;border-radius:8px;font-size:12px}.split{display:grid;grid-template-columns:1.8fr 1fr;gap:16px}.impact{display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--line);padding:10px 0}.impact:last-child{border:0}.impact strong{display:block}.tag{font-size:10px;font-weight:750;border-radius:4px;padding:3px 6px;background:#f0f3f7;color:#506074}.tag.critical{background:#fde7e7;color:#a32931}.tag.candidate{background:#fff3df;color:#8f611f}.modal{position:fixed;inset:0;background:#122b45aa;display:none;place-items:center;padding:20px;z-index:3}.modal.open{display:grid}.modalbox{background:white;border-radius:13px;padding:19px;width:min(980px,100%);max-height:88vh;overflow:auto}.modalhead{display:flex;justify-content:space-between;gap:15px;margin-bottom:12px}#upload{max-width:215px}#summaryNote{line-height:1.7}code{font-size:11px}.hide{display:none}footer{padding:10px 0 30px;color:var(--sub);font-size:12px}label{font-size:12px;color:var(--sub)}.foot{font-size:11px;color:var(--sub);margin-top:9px}@media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:repeat(3,1fr)}.split{grid-template-columns:1fr}}@media(max-width:560px){main{padding:12px}.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:repeat(2,1fr)}.kpi .value{font-size:21px}}
+</style><script>document.documentElement.dataset.hosted='true';</script><style>html:not([data-rendered]) body{visibility:hidden}</style><style>main>.panel.row>.toolbar{display:none!important}</style><style id="host-scroll-layout">html{overflow-y:hidden;overflow-x:auto}body>header{display:none!important}:root{--ce-host-top:0px;--ce-host-height:100vh}dialog{inset:auto!important;position:fixed!important;left:50%!important;top:calc(var(--ce-host-top) + var(--ce-host-height)/2)!important;transform:translate(-50%,-50%);margin:0!important;max-height:calc(var(--ce-host-height) - 32px)}
+.modal{padding:0;place-items:initial}.modalbox{position:absolute;left:50%;top:calc(var(--ce-host-top) + var(--ce-host-height)/2);transform:translate(-50%,-50%);width:min(980px,calc(100% - 40px));max-height:calc(var(--ce-host-height)*.88)}</style><style id="compact-host-layout">main>.panel.row:first-child,#warning{display:none!important}</style><style id="fine-tuning-403">main{padding-top:0!important}</style></head><body>
+<header><div><h1>CE RMS <span style="color:#70c0ff">/ Data Health</span></h1><small>Standalone concept · Management reporting · Nigeria GMT+1</small></div><div class="toolbar"><span class="pill demo" id="modeBadge">ILLUSTRATIVE DATA</span><span id="dateLabel" style="font-size:12px;color:#e9eff7"></span></div></header>
+<main>
+ <div class="panel row"><div><div class="title">Telemetry availability & reporting impact</div><div class="muted small">Source records → equipment groups → sites → individual monitored fields</div></div><div class="toolbar"><label for="upload">Import API JSON</label><input id="upload" type="file" accept=".json,application/json,.txt"/><button class="button" id="pasteButton">Paste JSON</button><button class="button" id="demoButton">Restore demo</button></div></div>
+ <div class="warn" id="warning">Prototype data is illustrative and generated for layout testing. Upload the complete JSON result from <code>get_rms_data_health_output_tz</code> to display real site availability.</div>
+ <section class="kpis" id="kpis"></section>
+ <section class="panel"><div class="row"><div class="title">Equipment-group availability</div><div class="small muted">Calculated from applicable field counts; click a group to filter the detail view</div></div><div class="grid" id="groups" style="margin-top:14px"></div><p class="foot">Group scores are coverage indices, not physical-equipment health scores. Configured module counts and site topology exclude equipment that is not installed. Without module configuration, battery slots remain monitored registry positions.</p></section>
+ <section class="panel"><div class="row"><div class="title">Site coverage matrix</div></div><div class="scroll" style="margin-top:12px"><table id="matrix"></table></div><p class="foot">Percentages are weighted by applicable expected measurements, not averages of percentage cells. Solar N/A means not installed. Installed solar uses its observed window, a reference-site estimate, or the approved 10-hour daily assumption; estimated windows are labelled.</p></section>
+ <section class="split"><div class="panel"><div class="row"><div class="title">Field-by-field completeness</div><span class="small muted" id="detailCount"></span></div><div class="scroll"><table id="fields"></table></div></div><div class="panel"><div class="row"><div class="title">Reporting impact watchlist</div><div class="toolbar"><label>Group <select id="groupSelect"></select></label><label>Site <select id="siteSelect"></select></label></div></div><p class="small muted">Prioritizes missing readings tied to confirmed API dependencies. Candidate solar dependencies are shown separately; no contractual SLA or warranty determination is made.</p><div id="impacts"></div></div></section>
+ <section class="panel"><div class="title">Interpretation & source policy</div><div id="summaryNote" class="small muted"></div></section>
+ <footer>CE RMS Data Health concept · Uses V1.0 JSON keys: <code>metadata</code>, <code>field_policy</code>, <code>sites</code>. Entirely offline, no external dependencies or Supabase credentials.</footer>
+</main>
+<div class="modal" id="modal"><div class="modalbox"><div class="modalhead"><div><div class="title" id="modalTitle">Field detail</div><div class="muted small" id="modalCaption"></div></div><button class="button" id="closeModal">Close ✕</button></div><div class="scroll"><table id="modalTable"></table></div></div></div>
+<script>
+const DEMO=null;
+let data=null,live=false,group='All',selectedSite='All';
+let installedModuleCounts=new Map(); // derived only from imported BMS Site Master-backed site_summary
+
+const groupDefs=['Battery · Bank','Battery · Modules','Rectifier','Solar','System & Cabinet','Customer Load'];
+const groupOf=k=>/^BATT_(CAP|CURR|SOC|SOH)$/.test(k)?'Battery · Bank':/^BATT/.test(k)?'Battery · Modules':/^(RECT_CURR|TEMP_RECT)$/.test(k)?'Rectifier':/^SOLAR_CURR/.test(k)?'Solar':/^(sys_volt|TEMP_CAB|TEMP_POWERCAB)$/.test(k)?'System & Cabinet':'Customer Load';
+const num=n=>typeof n==='number'&&Number.isFinite(n)?n:null;
+const fnum=n=>num(n)===null?'—':n.toLocaleString(undefined,{maximumFractionDigits:1});
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ptext=p=>p===null?'N/A':p.toFixed(1)+'%';
+// Installed-module applicability is sourced exclusively from the imported BMS API output.
+// Undefined means no configuration was supplied (retain the original standalone behavior).
+function moduleSlot(k){
+  let m=k.match(/^BATT_ENVTEMP([1-8])$|^BATT_SOC_0([1-8])$|^BATT_SOH([1-8])$|^BATT_VOLT([1-8])$|^BATT([1-8])_CYCLES$|^BATT_CURR_([1-8])$/);
+  return m?Number(m.slice(1).find(Boolean)):null;
+}
+function installedCount(site){return installedModuleCounts.get(site);}
+function moduleApplicable(s,k){
+  const slot=moduleSlot(k),count=installedCount(s.site);
+  return slot===null||count===undefined||slot<=count;
+}
+// Weighted non-NULL measurement completeness across installed battery modules only.
+function moduleMatrixPercentage(s){
+  const count=installedCount(s.site);
+  if(count===undefined)return stats('Battery · Modules',s.site).pct;
+  if(count===0)return null;
+  let present=0,expected=0;
+  for(const k of Object.keys(data.field_policy)){
+    const slot=moduleSlot(k);
+    if(slot===null||slot>count)continue;
+    const reading=fieldStat(s,k);
+    if(!reading||reading.d===null||reading.d<=0)continue;
+    present+=reading.p;
+    expected+=reading.d;
+  }
+  return expected>0?Math.min(100,100*present/expected):null;
+}
+
+// V1.4: one applicability policy for portfolio scores, matrix, details and impacts.
+let siteTopologies=new Map();
+function topologyState(s){
+  const raw=siteTopologies.get(s.site)??s.site_topology;
+  if(typeof raw!=='string'||!raw.trim())return null;
+  const solar=/(^|[+\s])S([+\s]|$)|(^|[^a-z0-9])solar([^a-z0-9]|$)/i.test(raw);
+  const battery=/(^|[+\s])B(?:\d+(?:\.\d+)?)?([+\s]|$)|\bbattery\b/i.test(raw);
+  const rectifier=/(^|[+\s])(G|DG|R)([+\s]|$)|\b(grid|generator|rectifier)\b/i.test(raw);
+  return solar||battery||rectifier?{solar,battery,rectifier}:null;
+}
+function solarInstalled(s){const topology=topologyState(s);return topology?topology.solar:(typeof s.solar_applicable==='boolean'?s.solar_applicable:null);}
+function fieldApplicable(s,k){
+  const topology=topologyState(s),g=groupOf(k);
+  if(g==='Solar')return solarInstalled(s)!==false;
+  if((g==='Battery · Bank'||g==='Battery · Modules')&&topology?.battery===false)return false;
+  if(g==='Rectifier'&&topology?.rectifier===false)return false;
+  return moduleApplicable(s,k);
+}
+function matrixPercentage(s,g){return stats(g,s.site).pct;}
+function groupStatus(s,g){
+  const topology=topologyState(s);
+  if(g==='Solar'){const x=solarWindow(s);return x.mode==='not-installed'?'Not installed according to site topology':x.mode==='observed'?'Solar installed; coverage within observed solar window':x.mode==='reference'?'Estimated solar window from reference sites: '+fnum(x.dailyHours)+' hours per day':x.mode==='assumed'?'Assumed solar window: 10 hours per day; no observed reference window was available':'Solar configuration or reporting cadence unavailable';}
+  if(g==='Battery · Modules'&&installedCount(s.site)===0)return 'No installed module slots in site configuration';
+  if((g==='Battery · Bank'||g==='Battery · Modules')&&topology?.battery===false)return 'Battery equipment not installed according to site topology';
+  if(g==='Rectifier'&&topology?.rectifier===false)return 'Rectifier not installed according to site topology';
+  return 'Click to drill down';
+}
+function measurementFamily(k){
+  if(/^BATT_ENVTEMP[1-8]$/.test(k))return 'Battery temperature';
+  if(/^BATT_SOC_0[1-8]$/.test(k))return 'Battery SOC / DoD';
+  if(/^BATT_SOH[1-8]$/.test(k))return 'Battery SOH';
+  if(/^BATT_VOLT[1-8]$/.test(k))return 'Battery voltage';
+  if(/^BATT[1-8]_CYCLES$/.test(k))return 'Battery cycle counters';
+  if(/^BATT_CURR_[1-8]$/.test(k))return 'Battery module current';
+  if(/^SOLAR_CURR/.test(k))return 'Solar current';
+  if(k==='T1_CURR'||k==='Tenant_1_Current')return 'Customer current';
+  return ({sys_volt:'System voltage',BATT_CURR:'Battery bank current',BATT_CAP:'Battery capacity',BATT_SOC:'Battery bank SOC',BATT_SOH:'Battery bank SOH',TEMP_CAB:'Cabinet temperature',TEMP_POWERCAB:'Power cabinet temperature',TEMP_RECT:'Rectifier temperature',RECT_CURR:'Rectifier current'})[k]||k;
+}
+function groupedImpacts(ss='All',g='All'){
+  const groups=new Map();
+  for(const r of fieldRows(ss,g)){
+    if(!(r.d>0&&r.missing>0&&r.policy))continue;
+    const cls=r.policy.criticality,weight=cls==='required_for_metric'?3:cls==='candidate_dependency_unverified'?1:0.5;
+    const reports=[...new Set((r.policy.affects||[]).map(x=>x.split('.')[0]))];
+    for(const report of reports.length?reports:['supporting']){
+      const family=measurementFamily(r.field),key=report+'|'+family;
+      if(!groups.has(key))groups.set(key,{report,family,rows:[],P:0,D:0,missing:0,weight:0});
+      const item=groups.get(key);item.rows.push(r);item.P+=r.p;item.D+=r.d;item.missing+=r.missing;item.weight=Math.max(item.weight,weight);
+    }
+  }
+  return [...groups.values()].map(x=>({...x,pct:100*x.P/x.D,index:100*x.missing/x.D*x.weight})).sort((a,b)=>b.index-a.index||b.missing-a.missing||(reportNames[a.report]||a.report).localeCompare(reportNames[b.report]||b.report)||a.family.localeCompare(b.family));
+}
+function impactSiteText(item){
+  const sites=new Map();for(const r of item.rows){if(!sites.has(r.site))sites.set(r.site,[]);sites.get(r.site).push(r);}
+  return [...sites].map(([site,rows])=>{
+    const slots=[...new Set(rows.map(r=>moduleSlot(r.field)).filter(x=>x!==null))];
+    const zero=rows.filter(r=>r.p===0).length;
+    if(slots.length){
+      const count=installedCount(site),scope=count===undefined?'monitored batteries':count+' installed batteries';
+      return site+': '+slots.length+' '+(count===undefined?'': 'of ')+scope+' with gaps'+(zero?' ('+zero+' with no readings)':'');
+    }
+    return site+': '+rows.length+' '+(rows.length===1?'field':'fields')+' with gaps'+(zero?' ('+zero+' with no readings)':'');
+  }).join('; ');
+}
+function groupedImpactNote(item){
+  if(item.family==='Customer current')return 'Missing customer-current components may affect load calculations; the SQL adds the two channels, so one available channel does not establish full coverage.';
+  const first=item.rows[0].field;
+  return impactNote(first).replace(/^Module [1-8] /,'Battery ').replace(/Module [1-8]/g,'Battery');
+}
+
+// V1.5 approved solar-window policy; observed windows remain authoritative.
+let siteSampleHours=new Map();
+function reportingHours(s){
+  const start=Date.parse(data.metadata?.start_at),end=Date.parse(data.metadata?.end_at_exclusive);
+  if(Number.isFinite(start)&&Number.isFinite(end)&&end>start)return (end-start)/3600000;
+  const cadence=siteSampleHours.get(s.site)||Number(s.sample_hours);
+  return cadence>0&&Number(s.expected_records)>0?cadence*Number(s.expected_records):null;
+}
+function solarSampleHours(s){
+  const configured=siteSampleHours.get(s.site)||Number(s.sample_hours);
+  if(configured>0&&Number.isFinite(configured))return configured;
+  const hours=reportingHours(s),expected=Number(s.expected_records);
+  return hours>0&&expected>0?hours/expected:null;
+}
+function solarWindow(s){
+  const installed=solarInstalled(s);
+  if(installed!==true)return {mode:installed===false?'not-installed':'unknown',d:null,estimated:false};
+  const observed=Number(s.expectation_profiles?.solar_observed_window);
+  if(observed>0&&Number.isFinite(observed))return {mode:'observed',d:observed,estimated:false};
+  const references=[];
+  for(const other of window.CEReferenceSites||data.sites){
+    if(other.site===s.site||solarInstalled(other)!==true)continue;
+    const slots=Number(other.expectation_profiles?.solar_observed_window),cadence=solarSampleHours(other),hours=reportingHours(other);
+    if(slots>0&&Number.isFinite(slots)&&cadence>0&&hours>0)references.push(Math.min(24,slots*cadence/(hours/24)));
+  }
+  references.sort((a,b)=>a-b);const mid=Math.floor(references.length/2);
+  const dailyHours=references.length?(references.length%2?references[mid]:(references[mid-1]+references[mid])/2):10;
+  const cadence=solarSampleHours(s),hours=reportingHours(s);
+  if(!(cadence>0&&hours>0))return {mode:'unavailable',d:null,estimated:true,dailyHours};
+  let d=Math.max(1,Math.round(dailyHours*(hours/24)/cadence));
+  if(Number(s.expected_records)>0)d=Math.min(d,Number(s.expected_records));
+  return {mode:references.length?'reference':'assumed',d,estimated:true,dailyHours,references:references.length};
+}
+function solarPortfolioNote(){
+  const windows=data.sites.filter(s=>solarInstalled(s)===true).map(s=>solarWindow(s));
+  if(windows.some(x=>x.mode==='assumed'))return 'No solar observation window was available. For calculation purposes, a 10-hour daily solar window has been assumed for every site configured with solar.';
+  if(windows.some(x=>x.mode==='reference'))return 'Missing solar windows are estimated using the median observed solar hours per day from other solar sites in this reporting period.';
+  if(windows.some(x=>x.mode==='unavailable'))return 'Solar is configured, but the reporting duration or sampling rate is unavailable for estimating missing solar observations.';
+  return '';
+}
+function solarFieldWindow(r){const s=data.sites.find(s=>s.site===r.site);return s&&groupOf(r.field)==='Solar'?solarWindow(s):null;}
+function expectedCell(r){const window=solarFieldWindow(r);return (r.d===null?'—':fnum(r.d))+(window?.estimated&&r.d>0?' (estimated)':'');}
+function fieldScore(r){const window=solarFieldWindow(r);if(window&&window.mode!=='not-installed'&&r.pct===null)return '<span class="muted">Coverage unavailable</span>';return scoreCell(r.pct)+(window?.estimated&&r.d>0?'<div class="small muted">Estimated window</div>':'');}
+function matrixScore(s,g){if(g!=='Solar')return scoreCell(matrixPercentage(s,g));const window=solarWindow(s);if(window.mode==='not-installed')return scoreCell(null);if(matrixPercentage(s,g)===null)return '<span class="muted">Coverage unavailable</span>';return scoreCell(matrixPercentage(s,g))+(window.estimated?'<div class="small muted">Estimated window</div>':'');}
+function denom(s,k){let x=data.field_policy[k];return x?.expectation==='solar_observed_window'?solarWindow(s).d:num(Number(s.expected_records));}
+function fieldStat(s,k){if(!fieldApplicable(s,k)||(!(k in (s.field_present_counts||{}))&&!(groupOf(k)==='Solar'&&solarInstalled(s)===true)))return null;let d=denom(s,k),v=Number(s.field_present_counts?.[k]||0);return {d,p:v,pct:d>0?100*v/d:null,site:s.site,field:k};}
+function stats(g='All',ss='All'){let D=0,P=0,n=0,missing=0;for(let s of data.sites){if(ss!=='All'&&s.site!==ss)continue;for(let k of Object.keys(data.field_policy)){if(g!=='All'&&groupOf(k)!==g)continue;let t=fieldStat(s,k);if(!t||t.d===null||t.d<=0)continue;D+=t.d;P+=t.p;n++;missing+=Math.max(0,t.d-t.p)}}return {D,P,n,missing,pct:D?Math.min(100,100*P/D):null};}
+function scoreCell(pct){if(pct===null)return '<span class="muted">N/A</span>';let c=pct<80?'verylow':pct<95?'low':'';return `<div class="cellscore"><div class="bar ${c}"><i style="width:${Math.max(0,Math.min(100,pct))}%"></i></div><span class="number">${ptext(pct)}</span></div>`}
+function fieldRows(ss='All',g='All'){let rows=[];for(let s of data.sites){if(ss!=='All'&&s.site!==ss)continue;for(let k of Object.keys(data.field_policy)){if(g!=='All'&&groupOf(k)!==g)continue;let t=fieldStat(s,k);if(!t)continue;rows.push({...t,policy:data.field_policy[k],group:groupOf(k),missing:t.d>0?Math.max(0,t.d-t.p):null})}}return rows}
+const reportNames={bms:'BMS',uptime:'Uptime/SLA',battery_usage:'Battery Usage',energy:'Energy Analysis',load_profile:'Load Profile',solar:'Solar'};
+function domain(p){let set=new Set((p?.affects||[]).map(x=>reportNames[x.split('.')[0]]||x.split('.')[0]));return [...set].join(', ')||'Supporting';}
+let impactExpanded=false;
+function impactNote(k){
+  let m;
+  if(k==='sys_volt')return 'System voltage gaps may reduce energy and BMS EFC evidence for this reporting window.';
+  if(k==='BATT_CURR')return 'Bank current gaps may affect discharge-energy/EFC and some source-state interpretations.';
+  if((m=k.match(/^BATT_CURR_([1-8])$/)))return `Module ${m[1]} current gaps may affect module discharge-energy and equivalent-cycle tracking.`;
+  if((m=k.match(/^BATT_ENVTEMP([1-8])$/)))return `Module ${m[1]} temperature coverage is incomplete; threshold-event and warranty-evidence interpretation may be limited.`;
+  if((m=k.match(/^BATT_VOLT([1-8])$/)))return `Module ${m[1]} voltage coverage is incomplete; recorded extrema may not represent the full period.`;
+  if((m=k.match(/^BATT_SOC_0([1-8])$/)))return `Module ${m[1]} SOC/DoD trends and events may be incomplete; check bank aggregate SOC where relevant.`;
+  if((m=k.match(/^BATT_SOH([1-8])$/)))return `Module ${m[1]} SOH history has gaps; site aggregate SOH may support some Energy summary fallbacks.`;
+  if((m=k.match(/^BATT([1-8])_CYCLES$/)))return `Module ${m[1]} cycle-counter history has gaps; cycle delta and lifecycle interpretation may be incomplete.`;
+  if(k==='RECT_CURR')return 'Rectifier current gaps can affect source-state classification and Energy rectifier contribution.';
+  if(k==='T1_CURR'||k==='Tenant_1_Current')return 'Customer-load telemetry has gaps; check alternate current field before marking the derived load unavailable.';
+  if(/^SOLAR_CURR/.test(k))return 'Solar-current window shows missing observations; generation effect requires validation against Energy SQL and window inference.';
+  if(k==='TEMP_RECT')return 'Rectifier temperature context is incomplete; source-state impact is not established by this temperature field.';
+  if(k==='TEMP_CAB'||k==='TEMP_POWERCAB')return 'Cabinet temperature context is incomplete; this is not direct equipment-failure evidence.';
+  if(k==='BATT_CAP'||k==='BATT_SOC'||k==='BATT_SOH')return 'Battery bank contextual/fallback availability is incomplete; examine module values and actual fallback requirements.';
+  return 'Telemetry evidence is incomplete; examine the API dependency policy before inferring report effect.';
+}
+function render(){document.getElementById('modeBadge').textContent=live?'API JSON LOADED':'ILLUSTRATIVE DATA';document.getElementById('modeBadge').className='pill '+(live?'':'demo');let m=data.metadata||{};document.getElementById('dateLabel').textContent=[m.start_at,m.end_at_exclusive].filter(Boolean).map(x=>String(x).slice(0,10)).join(' → ')+(m.local_day_timezone?' · '+m.local_day_timezone:'');
+let sites=data.sites||[];let expected=sites.reduce((a,s)=>a+(Number(s.expected_records)||0),0),available=sites.reduce((a,s)=>a+(Number(s.available_records)||0),0),recPct=expected?100*available/expected:null;
+let ranked=sites.map(s=>({...stats('All',s.site),site:s.site})).filter(x=>x.pct!==null).sort((a,b)=>a.pct-b.pct);
+let watch=fieldRows().filter(r=>r.pct!==null&&r.policy.criticality==='required_for_metric').sort((a,b)=>(b.missing||0)-(a.missing||0));
+let worstField=watch[0];let affected=new Set();watch.filter(r=>r.pct<100).forEach(r=>(r.policy.affects||[]).forEach(a=>affected.add(a.split('.')[0])));
+let KP=[['Source record availability',ptext(recPct),`${fnum(available)} / ${fnum(expected)} scheduled rows`],['Lowest field-coverage site',ranked[0]?.site||'—',ranked[0]?ptext(ranked[0].pct)+' weighted field coverage':'Unavailable'],['Highest missing critical field',worstField?worstField.field:'—',worstField?worstField.site+' · '+fnum(worstField.missing)+' missing readings':'No valid expected readings'],['Reports with telemetry gaps',String(affected.size)+' reports',affected.size?[...affected].map(x=>reportNames[x]||x).join(' · '):'No reports have incomplete required-for-metric readings']];document.getElementById('kpis').innerHTML=KP.map(x=>`<div class="kpi"><div class="lbl">${esc(x[0])}</div><div class="value">${esc(x[1])}</div><div class="meta">${esc(x[2])}</div></div>`).join('');
+document.getElementById('groups').innerHTML=groupDefs.map((g,i)=>{let st=stats(g),count=fieldRows('All',g).filter(r=>r.d>0).length;return `<button class="group ${group===g?'active':''}" data-group="${esc(g)}"><div class="small"><span class="swatch" style="background:${['#e39749','#9169c4','#a58b53','#0baa78','#dfaa35','#458fc3'][i]}"></span>${esc(g)}</div><div class="pct">${g==='Solar'&&st.pct===null&&data.sites.some(s=>solarInstalled(s)!==false)?'Coverage unavailable':ptext(st.pct)}</div><div class="subtitle">${fnum(st.missing)} missing · ${count} site-field entries</div>${g==='Solar'&&solarPortfolioNote()?`<div class="foot">${esc(solarPortfolioNote())}</div>`:''}</button>`}).join('');
+document.getElementById('groupSelect').innerHTML=['All',...groupDefs].map(x=>`<option value="${esc(x)}" ${group===x?'selected':''}>${esc(x)}</option>`).join('');document.getElementById('siteSelect').innerHTML=['All',...sites.map(x=>x.site)].map(x=>`<option value="${esc(x)}" ${selectedSite===x?'selected':''}>${esc(x)}</option>`).join('');
+let cols=['Source',...groupDefs];document.getElementById('matrix').innerHTML=`<thead><tr><th>Site</th>${cols.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>`+sites.map(s=>`<tr><td><button data-site="${esc(s.site)}">${esc(s.site)}</button></td><td>${scoreCell(s.expected_records?100*s.available_records/s.expected_records:null)}</td>${groupDefs.map(g=>`<td title="${esc(groupStatus(s,g))}"><button data-drill="${esc(s.site)}|${esc(g)}">${matrixScore(s,g)}</button></td>`).join('')}</tr>`).join('')+'</tbody>';
+let rows=fieldRows(selectedSite,group).filter(r=>moduleApplicable({site:r.site},r.field));document.getElementById('detailCount').textContent=`${rows.length} site-field entries`;
+document.getElementById('fields').innerHTML='<thead><tr><th>Site</th><th>Field</th><th>Group</th><th>Present</th><th>Expected</th><th>Availability</th><th>Impact</th></tr></thead><tbody>'+rows.map(r=>`<tr><td>${esc(r.site)}</td><td><button data-field="${esc(r.site)}|${esc(r.field)}">${esc(r.field)}</button></td><td>${esc(r.group)}</td><td>${fnum(r.p)}</td><td>${expectedCell(r)}</td><td>${fieldScore(r)}</td><td><span class="tag ${r.policy.criticality==='required_for_metric'?'critical':r.policy.criticality==='candidate_dependency_unverified'?'candidate':''}">${esc(r.policy.criticality==='required_for_metric'?'Required':r.policy.criticality==='supporting'?'Supporting':'Candidate')}</span></td></tr>`).join('')+'</tbody>';
+const allImpactCandidates=groupedImpacts(selectedSite,group);
+const impactCandidates=impactExpanded?allImpactCandidates:allImpactCandidates.slice(0,9);
+const impactRows=impactCandidates.map(item=>{
+  const cls=item.weight===3?'critical':item.weight===1?'candidate':'';
+  const tag=item.weight===3?'Required':item.weight===1?'Candidate':'Supporting';
+  const report=reportNames[item.report]||'Supporting context';
+  return `<div class="impact"><span class="tag ${cls}">${esc(tag)}</span><div style="flex:1;min-width:0"><strong>${esc(report)} · ${esc(item.family)}</strong><div class="small muted">${esc(impactSiteText(item))}</div><div class="small muted" style="margin-top:3px">Potential impact: ${esc(groupedImpactNote(item))}</div><div class="small muted" style="margin-top:3px">${fnum(item.missing)} missing / ${fnum(item.D)} expected · impact index ${item.index.toFixed(1)}${item.family==='Solar current'?(item.rows.some(r=>solarFieldWindow(r)?.estimated)?' · estimated solar window':' · observed solar window'):''}</div></div><div class="number" title="Coverage of the incomplete fields listed in this report group; not report accuracy">${ptext(item.pct)}</div></div>`;
+}).join('');
+const expander=allImpactCandidates.length>9?`<button class="button" id="impactExpand" style="margin-top:10px" aria-expanded="${impactExpanded}">${impactExpanded?'Show first 9':'Show all '+allImpactCandidates.length}</button>`:'';
+const noteFoot='<p class="foot" style="margin:10px 0 0">Grouped by report and measurement type. Only configured applicable equipment is assessed. A battery with gaps can still have readings; no readings means zero observations. Coverage refers to the incomplete fields listed, not report accuracy. A field may support several reports, so report groups must not be added together. Prioritization estimates evidence exposure, not proof of SLA/warranty noncompliance. Missing solar windows use a reference-site estimate or the approved 10-hour daily assumption; estimated counts describe possible missing telemetry.</p>';
+document.getElementById('impacts').innerHTML=(impactRows||'<p class="small muted">No applicable incomplete fields in current selection. Fields with unknown solar expectation are not ranked.</p>')+expander+noteFoot;
+document.getElementById('summaryNote').innerHTML=`<p><b>Source coverage:</b> available scheduled rows ÷ expected rows. <b>Field coverage:</b> non-NULL counts ÷ applicable expected rows. Solar fields use the API-derived <code>solar_observed_window</code> when available. For installed solar without an observed window, expected samples use the median observed solar hours per day from reference sites in this reporting period, converted at the target site sampling rate. If no reference exists, 10 solar hours per reporting day are assumed. Estimated expected counts are rounded to whole samples and capped at scheduled records. Solar <b>N/A</b> is reserved for sites without solar; unknown reporting duration or cadence is shown as coverage unavailable.</p><p><b>Impact watchlist:</b> displays dependencies recorded by <code>field_policy.affects</code>, emphasizing <code>required_for_metric</code>. It indicates potential missing-data exposure, not a verified report error or warranty/SLA breach. Group percentages, the matrix, field details and report impacts use the same applicable-equipment fields. Configured module counts exclude unused battery slots. Site topology determines solar and equipment installation before expected-window coverage is assessed. If topology is absent, the API solar-applicability flag is used; unknown module counts retain registry positions without assuming installation.</p><p><b>API metadata:</b> ${esc(JSON.stringify({api:m.api,version:m.version,field_policy_version:m.field_policy_version,local_day_timezone:m.local_day_timezone}))}</p>`;
+}
+function openModal(site,g,field){const s=data.sites.find(s=>s.site===site);if(!s)return;let rows=fieldRows(site,g||'All').filter(r=>moduleApplicable({site:r.site},r.field)&&(!field||r.field===field));document.getElementById('modalTitle').textContent=site+' — '+(field||g||'Field completeness');document.getElementById('modalCaption').textContent='Actual API field counts · potential calculation exposure';document.getElementById('modalTable').innerHTML='<thead><tr><th>Field</th><th>Present</th><th>Expected</th><th>Coverage</th><th>Criticality</th><th>Affects</th></tr></thead><tbody>'+rows.map(r=>`<tr><td><code>${esc(r.field)}</code></td><td>${fnum(r.p)}</td><td>${expectedCell(r)}</td><td>${fieldScore(r)}</td><td>${esc(r.policy.criticality)}</td><td>${esc((r.policy.affects||[]).join(', '))}</td></tr>`).join('')+'</tbody>';document.getElementById('modal').classList.add('open')}
+function load(text){let obj=JSON.parse(text);
+if(Array.isArray(obj)&&obj.length===1)obj=obj[0];
+if(obj?.executive_payload){
+  const bundle=obj.executive_payload;
+  const siteSummary=bundle.bms?.site_summary;
+  if(!Array.isArray(siteSummary))throw Error('Combined JSON is missing bms.site_summary for installed-module configuration.');
+  const counts=new Map();
+  for(const site of siteSummary){
+    if(typeof site.site_id!=='string'||!Number.isInteger(site.module_count)||site.module_count<0||site.module_count>8)continue;
+    counts.set(site.site_id,site.module_count);
+  }
+  const health=bundle.data_health;
+  if(!health||!Array.isArray(health.sites))throw Error('Combined JSON is missing data_health.sites.');
+  if(health.sites.some(site=>!counts.has(site.site)))throw Error('BMS Site Master module configuration is missing for a Data Health site.');
+  siteTopologies=new Map();
+  for(const row of bundle.energy?.site_summary||[]){if(typeof row.site_id==='string'&&typeof row.site_topology==='string')siteTopologies.set(row.site_id,row.site_topology);}
+  for(const row of siteSummary){if(!siteTopologies.has(row.site_id)&&typeof row.site_topology==='string')siteTopologies.set(row.site_id,row.site_topology);}
+  siteSampleHours=new Map();
+  for(const row of siteSummary){const h=Number(row.sample_hours)||(Number(row.sample_rate_per_hr)>0?1/Number(row.sample_rate_per_hr):0)||(Number(row.sample_seconds)>0?Number(row.sample_seconds)/3600:0);if(h>0&&Number.isFinite(h))siteSampleHours.set(row.site_id,h);}
+  installedModuleCounts=counts;
+  obj=health;
+}else{
+  installedModuleCounts=new Map();siteTopologies=new Map();siteSampleHours=new Map();
+  if(obj?.get_rms_data_health_output_tz)obj=obj.get_rms_data_health_output_tz;
+  if(typeof obj==='string')obj=JSON.parse(obj);
+}
+if(!obj||!Array.isArray(obj.sites)||typeof obj.field_policy!=='object')throw Error('Expected an API JSON object with sites[] and field_policy.');data=obj;live=true;group='All';selectedSite='All';impactExpanded=false;document.getElementById('warning').textContent='Real API JSON loaded locally into this browser. No data was uploaded to an external service. Inspect applicability warnings below before treating scores as final.';render()}
+document.getElementById('upload').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{load(await f.text())}catch(err){alert('Unable to load JSON: '+err.message)}});document.getElementById('pasteButton').onclick=()=>{let s=prompt('Paste full JSON response (metadata, field_policy, sites):');if(s)try{load(s)}catch(err){alert(err.message)}};document.getElementById('demoButton').onclick=()=>{data=structuredClone(DEMO);installedModuleCounts=new Map();siteTopologies=new Map();siteSampleHours=new Map();live=false;group='All';selectedSite='All';impactExpanded=false;document.getElementById('warning').textContent='Prototype data is illustrative and generated for layout testing. Upload the complete JSON result from the Data Health API to display real values.';render()};document.addEventListener('click',e=>{if(e.target.closest('#impactExpand')){impactExpanded=!impactExpanded;render();document.getElementById('impactExpand')?.focus();return;}let t=e.target.closest('[data-group]');if(t){group=group===t.dataset.group?'All':t.dataset.group;impactExpanded=false;render()}t=e.target.closest('[data-site]');if(t){selectedSite=t.dataset.site;impactExpanded=false;render()}t=e.target.closest('[data-drill]');if(t){let [s,g]=t.dataset.drill.split('|');openModal(s,g)}t=e.target.closest('[data-field]');if(t){let [s,f]=t.dataset.field.split('|');openModal(s,null,f)}});document.getElementById('groupSelect').onchange=e=>{group=e.target.value;impactExpanded=false;render()};document.getElementById('siteSelect').onchange=e=>{selectedSite=e.target.value;impactExpanded=false;render()};document.getElementById('closeModal').onclick=()=>document.getElementById('modal').classList.remove('open');document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')e.target.classList.remove('open')};</script><script>window.CEReport={render(payload){window.CEReferenceSites=payload.references;load(JSON.stringify({executive_payload:payload.data}));document.getElementById('modeBadge').textContent=payload.mode==='fixture'?'TEST FIXTURE':'LIVE API DATA';document.getElementById('warning').textContent=payload.source;document.querySelector('footer').textContent='CE RMS Data Health V1.5 · Hosted report · Applicable field counts and source policy';document.documentElement.dataset.rendered='true';},inspect(){return {data,installed:[...installedModuleCounts],stats:stats(),solar:data.sites.map(s=>({site:s.site,...solarWindow(s)}))}}};</script><script type="module" src="adapter.js"></script></body></html>

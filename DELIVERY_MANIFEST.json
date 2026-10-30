@@ -1,0 +1,409 @@
+{
+  "release": "4.0.3-integration-candidate",
+  "baseline": "V3.0.2.1",
+  "agreement": "V1.2_20261029",
+  "entry": "START_LOCAL.cmd",
+  "localUrl": "http://127.0.0.1:5500/",
+  "selfHashExcluded": true,
+  "prerequisites": {
+    "local": "Python 3 (verified 3.12.14); py launcher or python on PATH",
+    "testing": "Node optional; browser replay uses Playwright/pngjs and installed Chromium",
+    "hosted": "Existing GitHub Pages; add hosted Supabase redirect URL at deployment"
+  },
+  "files": [
+    {
+      "path": "DEPLOY_AND_ROLLBACK.md",
+      "role": "guide-or-record",
+      "purpose": "Read when needed; not executed",
+      "deploymentRequired": false,
+      "sha256": "beb19c597c9f606c8821be71e2d561aa5e74beb2356bd6eeb4d85141db27ebe7"
+    },
+    {
+      "path": "README.md",
+      "role": "guide-or-record",
+      "purpose": "Read when needed; not executed",
+      "deploymentRequired": false,
+      "sha256": "d4fa8ad4e4dbf7fb82f38d3cc12a5423efbcd7ef1134e780efe5c6e506f44434"
+    },
+    {
+      "path": "RELEASE_VERSION.txt",
+      "role": "guide-or-record",
+      "purpose": "Read when needed; not executed",
+      "deploymentRequired": false,
+      "sha256": "2feeeafbc18e4a7c3d9eb2cf8f7e08525c8467f40baf05b410de6f2badc73a35"
+    },
+    {
+      "path": "START_HERE.md",
+      "role": "guide-or-record",
+      "purpose": "Read when needed; not executed",
+      "deploymentRequired": false,
+      "sha256": "415d3fb1b304bdd844e6ac5ca1e8bcebacdfb93db4e431ddf5bd86ea0fd1ad29"
+    },
+    {
+      "path": "START_LOCAL.cmd",
+      "role": "local-launcher",
+      "purpose": "Double-click local launch",
+      "deploymentRequired": false,
+      "sha256": "6d582f37b5af67c685103dcd07e7113caf500f29f88dfaef6fee236165ed7faa"
+    },
+    {
+      "path": "config/api-registry.js",
+      "role": "configuration",
+      "purpose": "Editable declared settings",
+      "deploymentRequired": true,
+      "sha256": "de6a6f9a502ebf16400586e9dff56ad326165a15647bcfb5dc698884ad427458"
+    },
+    {
+      "path": "config/app-config.js",
+      "role": "configuration",
+      "purpose": "Editable declared settings",
+      "deploymentRequired": true,
+      "sha256": "3d8426a2cb77f3b1598d033ba5158bed45efe7929ecd2e0d1fbc89d7de9c365d"
+    },
+    {
+      "path": "config/dashboard-display-config.js",
+      "role": "configuration",
+      "purpose": "Editable declared settings",
+      "deploymentRequired": true,
+      "sha256": "bca35c5e0f32bfb9c1e38bf6dea191c044a0a4dd69e1c3051189ec42f3630461"
+    },
+    {
+      "path": "config/local-server.cmd",
+      "role": "configuration",
+      "purpose": "Editable declared settings",
+      "deploymentRequired": true,
+      "sha256": "7e782330084b5372fbc8cedd0614151529dae8b06c1ed44a364aa1dd6bfc175d"
+    },
+    {
+      "path": "config/page-registry.js",
+      "role": "configuration",
+      "purpose": "Editable declared settings",
+      "deploymentRequired": true,
+      "sha256": "b0fe9ef896a27e5d9cfc14c127dee21b7a16b52acc3c3ed4fd7e0c7409918772"
+    },
+    {
+      "path": "css/app.css",
+      "role": "runtime",
+      "purpose": "Application support file",
+      "deploymentRequired": true,
+      "sha256": "19ec70aea796133a30436b1320969d1ab929c6a4d8ddfbd831912175106386ef"
+    },
+    {
+      "path": "data/batteryUsageDummy.js",
+      "role": "runtime",
+      "purpose": "Application support file",
+      "deploymentRequired": true,
+      "sha256": "be8c9778a5d70fe91d694cc942edac19af9760cf5a791bac58c3e908f1c76e31"
+    },
+    {
+      "path": "index.html",
+      "role": "runtime",
+      "purpose": "Application support file",
+      "deploymentRequired": true,
+      "sha256": "0b807828c15ec417b30c1fa57e798eaa9a758c5e7b8675c543cc4d6ecf40b3df"
+    },
+    {
+      "path": "js/app.js",
+      "role": "runtime",
+      "purpose": "Application support file",
+      "deploymentRequired": true,
+      "sha256": "97cd34cae782a045b707c2992a7b356cde008d77a748db42a8a08b056397d373"
+    },
+    {
+      "path": "js/components/batteryUsagePage.js",
+      "role": "runtime",
+      "purpose": "Retained report presentation",
+      "deploymentRequired": true,
+      "sha256": "325d2671525ed3eee280e5192cf9d0441fa195e77a1f0d3c5afc956252d5a3ed"
+    },
+    {
+      "path": "js/components/energyAnalysisPage.js",
+      "role": "runtime",
+      "purpose": "Retained report presentation",
+      "deploymentRequired": true,
+      "sha256": "ca01fce421df4588d1151b40efc8186b383915b7e30f2d270533f01abb7d6c1c"
+    },
+    {
+      "path": "js/components/ui.js",
+      "role": "runtime",
+      "purpose": "Retained report presentation",
+      "deploymentRequired": true,
+      "sha256": "88f49036026d8dad709e7157dd4bc9f0eb23b9397f9c9589c94c108656724f9b"
+    },
+    {
+      "path": "js/components/uptimeBackupPage.js",
+      "role": "runtime",
+      "purpose": "Retained report presentation",
+      "deploymentRequired": true,
+      "sha256": "7dd1ebbbd4000ad328c91e7a421d5df070b229446af67bb4663fd204117b011a"
+    },
+    {
+      "path": "js/config/displayController.js",
+      "role": "runtime",
+      "purpose": "Application support file",
+      "deploymentRequired": true,
+      "sha256": "f3b693d34c047ee05ccae66f1bc6e70e38b18a99ca577081aecaa9cb92a3933c"
+    },
+    {
+      "path": "js/config/metricRegistry.js",
+      "role": "runtime",
+      "purpose": "Application support file",
+      "deploymentRequired": true,
+      "sha256": "7934331c9939462308745fcac434d8e638200cad61daba70967c38e1021220c4"
+    },
+    {
+      "path": "js/host/bms-compat.js",
+      "role": "runtime",
+      "purpose": "Host lifecycle, adapter or data service",
+      "deploymentRequired": true,
+      "sha256": "1a9cacc8842a609b074027bd7617cf0ac5f9fa05183800544ab24d5f154b018c"
+    },
+    {
+      "path": "js/host/bundle.js",
+      "role": "runtime",
+      "purpose": "Host lifecycle, adapter or data service",
+      "deploymentRequired": true,
+      "sha256": "02dc6b8a5fde5460fe5b0a750265b33acc245edf491576f9b97d46da0e3819f2"
+    },
+    {
+      "path": "js/host/cache.js",
+      "role": "runtime",
+      "purpose": "Host lifecycle, adapter or data service",
+      "deploymentRequired": true,
+      "sha256": "a4a2caad590d7160aa17ec747f4d4062e7f70429a138f68767ca311e707a446c"
+    },
+    {
+      "path": "js/host/context.js",
+      "role": "runtime",
+      "purpose": "Host lifecycle, adapter or data service",
+      "deploymentRequired": true,
+      "sha256": "6ec19a510d6443f142ddc4db9a6e26e9d86857713fa965600fd8665e3ee002b3"
+    },
+    {
+      "path": "js/host/frame.js",
+      "role": "runtime",
+      "purpose": "Host lifecycle, adapter or data service",
+      "deploymentRequired": true,
+      "sha256": "24fb5984c79f78e82ae447a9a088ebbb04bf47e352da8b97779300683787d1c6"
+    },
+    {
+      "path": "js/host/loading-panel.js",
+      "role": "runtime",
+      "purpose": "Dashboard request scheduling and progress",
+      "deploymentRequired": true,
+      "sha256": "749a24b21cc756efd5ac7a18de9bca765632ff150d94f0a15d0e877ba92ab5e6"
+    },
+    {
+      "path": "js/host/report-bridge.js",
+      "role": "runtime",
+      "purpose": "Host lifecycle, adapter or data service",
+      "deploymentRequired": true,
+      "sha256": "42c994170de740412c4630f3849e44824e70327b8aec98e9bc86339f874e01d2"
+    },
+    {
+      "path": "js/host/request-scheduler.js",
+      "role": "runtime",
+      "purpose": "Dashboard request scheduling and progress",
+      "deploymentRequired": true,
+      "sha256": "692c3b176a6c1867caae0c0114758df16942116c92b70a76949ba1cf839a940b"
+    },
+    {
+      "path": "js/host/retained/display-context.js",
+      "role": "runtime",
+      "purpose": "Host lifecycle, adapter or data service",
+      "deploymentRequired": true,
+      "sha256": "db0811f0bd94ce7c36e3d1a7d9c5429be5f476fd3dde5f1343e1c9993fe96cd7"
+    },
+    {
+      "path": "js/host/retained/energy.js",
+      "role": "runtime",
+      "purpose": "Host lifecycle, adapter or data service",
+      "deploymentRequired": true,
+      "sha256": "a75a2d6167eb0e3a805fca93dadf81508879e9eea761fd7ce2be20833f13c40d"
+    },
+    {
+      "path": "js/host/retained/uptime.js",
+      "role": "runtime",
+      "purpose": "Host lifecycle, adapter or data service",
+      "deploymentRequired": true,
+      "sha256": "405b4c159d816cb8c53b6d1d6220ef167410a872e00c66a10bb8d62e134d4ad6"
+    },
+    {
+      "path": "js/services/batteryUsageMapper.js",
+      "role": "runtime",
+      "purpose": "Preserved authenticated transport or numerical mapper",
+      "deploymentRequired": true,
+      "sha256": "53e7f11e4ebd469ac12ff8a64fea4103f7f9890c8fda7315730e6fd812ffbe19"
+    },
+    {
+      "path": "js/services/batteryUsageService.js",
+      "role": "runtime",
+      "purpose": "Preserved authenticated transport or numerical mapper",
+      "deploymentRequired": true,
+      "sha256": "ec3b3d6cdb59366b8401ca2bd2fd7ae76c0e4753af3c8a76d05bdf3ee8fd4202"
+    },
+    {
+      "path": "js/services/energyMapper.js",
+      "role": "runtime",
+      "purpose": "Preserved authenticated transport or numerical mapper",
+      "deploymentRequired": true,
+      "sha256": "fe882e3f500eefda9bd7757669278b88d8671e6d9034999e274aea8aca29ddcf"
+    },
+    {
+      "path": "js/services/energyService.js",
+      "role": "runtime",
+      "purpose": "Preserved authenticated transport or numerical mapper",
+      "deploymentRequired": true,
+      "sha256": "83a176480d33a7f64ceaf096ba0c4c2bd1b41ec98ee531ff97755bb6ff6bf6c5"
+    },
+    {
+      "path": "js/services/rpcClient.js",
+      "role": "runtime",
+      "purpose": "Preserved authenticated transport or numerical mapper",
+      "deploymentRequired": true,
+      "sha256": "e9adad66904d8353f7da2a1cc1a018aae0790d542d5bef197f3b0ceb7024dc1c"
+    },
+    {
+      "path": "js/services/uptimeSlaMapper.js",
+      "role": "runtime",
+      "purpose": "Preserved authenticated transport or numerical mapper",
+      "deploymentRequired": true,
+      "sha256": "edab554f5adc108a86263e5c09347f341b27b8462f379c9e43d3a3d6e3151270"
+    },
+    {
+      "path": "js/services/uptimeSlaService.js",
+      "role": "runtime",
+      "purpose": "Preserved authenticated transport or numerical mapper",
+      "deploymentRequired": true,
+      "sha256": "ccfb90732d8f9abee1aee1acafaeef956794b666e920464c78c2d39c9106f178"
+    },
+    {
+      "path": "js/utils/dates.js",
+      "role": "runtime",
+      "purpose": "Application support file",
+      "deploymentRequired": true,
+      "sha256": "7d0a3536b7cc3206c0eedb4f596f9b5f66da222b6270ce4120670a386f9b717c"
+    },
+    {
+      "path": "package.json",
+      "role": "runtime",
+      "purpose": "Application support file",
+      "deploymentRequired": true,
+      "sha256": "01ebe7b290bae80f59a20a424693e0cbac21306f4ebdf8e25c2b1b5f79e866c3"
+    },
+    {
+      "path": "pages/bms/adapter.js",
+      "role": "runtime",
+      "purpose": "Isolated approved report package",
+      "deploymentRequired": true,
+      "sha256": "a28bb4d9c723ee2620e9333fa9fc645f455312b785667edb29d2be337fe438ed"
+    },
+    {
+      "path": "pages/bms/index.html",
+      "role": "runtime",
+      "purpose": "Isolated approved report package",
+      "deploymentRequired": true,
+      "sha256": "cb9385714b98c258c6cf81fc9e24030836681a6aa6f390291cb3e91a2780192b"
+    },
+    {
+      "path": "pages/bms/manifest.json",
+      "role": "runtime",
+      "purpose": "Isolated approved report package",
+      "deploymentRequired": true,
+      "sha256": "84be6f1848647187454d2114032d749aa461cd87c6a7f8df79f1faff534030f8"
+    },
+    {
+      "path": "pages/data-health/adapter.js",
+      "role": "runtime",
+      "purpose": "Isolated approved report package",
+      "deploymentRequired": true,
+      "sha256": "3704876973d4900a03ebc675cbf2fea860b277f9d76889bdcf1c7b9205c4ade7"
+    },
+    {
+      "path": "pages/data-health/index.html",
+      "role": "runtime",
+      "purpose": "Isolated approved report package",
+      "deploymentRequired": true,
+      "sha256": "b326c70379f677efd7e65c360d9ee8ffb342b13758d002d61ab56600a04973c2"
+    },
+    {
+      "path": "pages/data-health/manifest.json",
+      "role": "runtime",
+      "purpose": "Isolated approved report package",
+      "deploymentRequired": true,
+      "sha256": "0af361a6e499faab4c89d62319c5db1d4a9bf9c0515fb4080341ba06cebf430b"
+    },
+    {
+      "path": "pages/executive/adapter.js",
+      "role": "runtime",
+      "purpose": "Isolated approved report package",
+      "deploymentRequired": true,
+      "sha256": "f399a0b4a0bf7cdb34b92128d2c35da755c5c6c64f3232fc730aecc13cdd3fd8"
+    },
+    {
+      "path": "pages/executive/index.html",
+      "role": "runtime",
+      "purpose": "Isolated approved report package",
+      "deploymentRequired": true,
+      "sha256": "87ff27ed49c20851d2cd56fc40f28a6e4a97d2320e14e09916cecfd37507b73b"
+    },
+    {
+      "path": "pages/executive/manifest.json",
+      "role": "runtime",
+      "purpose": "Isolated approved report package",
+      "deploymentRequired": true,
+      "sha256": "f89dc3ebf84454f4172264c101a330f9b77a2c152db9518b5e64951b370795aa"
+    },
+    {
+      "path": "tests/README.md",
+      "role": "test",
+      "purpose": "Verification only; no business fixtures bundled",
+      "deploymentRequired": false,
+      "sha256": "81d5655c7cf86c4886a4ad0d684ad94b7c29a1371ddbec89c71209b5547e2a36"
+    },
+    {
+      "path": "tests/browser-checks.mjs",
+      "role": "test",
+      "purpose": "Verification only; no business fixtures bundled",
+      "deploymentRequired": false,
+      "sha256": "c8a9cddd1990f9c825c804d38dba41d88ada65c71beb26480a1c3e803e472b4c"
+    },
+    {
+      "path": "tests/core.test.mjs",
+      "role": "test",
+      "purpose": "Verification only; no business fixtures bundled",
+      "deploymentRequired": false,
+      "sha256": "fe1afc9de5cdce284d1226eb8bf185dea7b4aab02cd0d625818e4287b83bdc71"
+    },
+    {
+      "path": "tests/request-scheduler.test.mjs",
+      "role": "verification",
+      "purpose": "Optional developer verification",
+      "deploymentRequired": false,
+      "sha256": "c0d2d54a797b86bfe2b3524b7e6203f74d794a34b437d52c93b310d0e4e89ba7"
+    },
+    {
+      "path": "tests/test-shell.html",
+      "role": "test",
+      "purpose": "Verification only; no business fixtures bundled",
+      "deploymentRequired": false,
+      "sha256": "e06f1eb8ad954d3397bc2f117b03cd805251933aa7151eaf42b6a5145670970a"
+    },
+    {
+      "path": "tests/test-shell.js",
+      "role": "test",
+      "purpose": "Verification only; no business fixtures bundled",
+      "deploymentRequired": false,
+      "sha256": "7d8cd8c73eb0d97c1562d27c8c5ddda3ef044666c8b3065cf258f711361f9319"
+    },
+    {
+      "path": "tools/local_server.py",
+      "role": "local-launcher",
+      "purpose": "Application support file",
+      "deploymentRequired": false,
+      "sha256": "1c49a6d23e9c9416a6d99673e02b5f200ef4b1daa60baa8befade894d2b44f92"
+    }
+  ],
+  "date": "2026-10-30",
+  "correction": "Narrow visual corrections only"
+}

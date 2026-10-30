@@ -1,0 +1,16 @@
+{
+  "page": "data-health",
+  "version": "1.5",
+  "hostContract": "ce-rms-report-v1",
+  "entry": "index.html",
+  "adapter": "adapter.js",
+  "assets": [
+    "index.html",
+    "adapter.js"
+  ],
+  "dependencies": [
+    "../../js/host/report-bridge.js",
+    "../../js/host/context.js",
+    "../../js/host/bms-compat.js"
+  ]
+}

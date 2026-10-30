@@ -2,179 +2,51 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#071a2b">
-<meta name="description" content="Circular Energy RMS Reports">
-<title>CE RMS Reports</title>
-<style>:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#102030;background:#f4f7f9;font-synthesis:none;text-rendering:optimizeLegibility}*{box-sizing:border-box}body{margin:0;min-width:320px;background:#f4f7f9}button,input{font:inherit}.app-shell{min-height:100vh}.topbar{height:68px;padding:0 28px;background:#071a2b;color:white;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;background:white;color:#071a2b;font-weight:900;letter-spacing:-1px}.brand-name{font-size:12px;letter-spacing:1.7px;font-weight:800}.brand-product{margin-top:2px;font-size:10px;letter-spacing:1.8px;color:#91a8ba}.status-pill{display:flex;align-items:center;gap:7px;font-size:12px;color:#b9cad6;border:1px solid #284054;border-radius:20px;padding:7px 11px}.content{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:34px 0 50px}.hero{display:flex;justify-content:space-between;gap:28px;align-items:end;margin-bottom:24px}.hero h1{margin:0 0 7px;font-size:clamp(25px,3vw,34px);letter-spacing:-.8px;color:#0b2032}.hero p{margin:0;max-width:650px;color:#667784;line-height:1.5;font-size:14px}.controls{display:flex;align-items:end;gap:10px;flex-wrap:wrap;justify-content:flex-end}.controls label{display:grid;gap:5px}.controls label span{font-size:11px;color:#607180;font-weight:700}.controls input{height:39px;border:1px solid #ccd6dd;border-radius:7px;padding:0 10px;background:white;color:#182b3b}.controls button{height:39px;border:0;border-radius:7px;padding:0 15px;background:#087b57;color:white;font-size:11px;font-weight:800;letter-spacing:.35px;cursor:pointer;display:flex;align-items:center;gap:8px}.controls button:hover{background:#066947}.controls button:disabled{opacity:.65;cursor:default}.notice{border-radius:8px;padding:12px 15px;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;font-size:13px}.notice.warning{background:#fff8df;border:1px solid #ead58a;color:#6e5a13}.notice.error{background:#fff0ef;border:1px solid #e9b8b3;color:#7a2922}.notice code{background:rgba(0,0,0,.06);padding:1px 4px;border-radius:3px}.report-meta{display:flex;justify-content:space-between;gap:15px;margin:0 0 15px;padding:0 2px;color:#657582;font-size:12px}.site-section{background:white;border:1px solid #dce4e9;border-radius:12px;padding:21px;margin-bottom:18px;box-shadow:0 2px 8px rgba(14,40,60,.035)}.site-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:17px;border-bottom:1px solid #edf1f4;margin-bottom:18px}.site-heading h2{margin:0;font-size:21px;color:#0b2032}.site-location{display:block;color:#7a8994;font-size:12px;margin-top:3px}.site-load{display:grid;text-align:right;gap:2px}.site-load strong{font-size:17px}.site-load span{font-size:10px;color:#83909a;text-transform:uppercase;letter-spacing:.5px}.section-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#526575;margin:18px 0 9px}.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.metric-card{min-height:79px;border:1px solid #e3e9ed;border-radius:8px;padding:12px 13px;background:#fbfcfd}.metric-label{color:#74828d;font-size:10px;line-height:1.25;margin-bottom:8px}.metric-value{font-size:18px;line-height:1;font-weight:800;color:#172c3d}.metric-unit{font-size:10px;font-weight:600;color:#758591;margin-left:4px}.metric-green{border-top:2px solid #55c86a}.metric-blue{border-top:2px solid #4d94d7}.metric-amber{border-top:2px solid #d7a948}.empty-state{min-height:300px;border:1px dashed #cbd6dd;border-radius:12px;display:grid;place-items:center;align-content:center;text-align:center;color:#6f7f8b;background:rgba(255,255,255,.55)}.empty-icon{width:50px;height:50px;display:grid;place-items:center;border-radius:12px;background:#071a2b;color:white;font-weight:900;margin-bottom:12px}.empty-state h2{margin:0 0 5px;color:#243a4c;font-size:17px}.empty-state p{margin:0;font-size:13px}footer{border-top:1px solid #dde5ea;color:#81909a;font-size:11px;text-align:center;padding:17px}.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}@media(max-width:900px){.hero{align-items:stretch;flex-direction:column}.controls{justify-content:flex-start}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.topbar{padding:0 15px}.status-pill{display:none}.content{width:min(100% - 20px,1180px);padding-top:22px}.controls{display:grid;grid-template-columns:1fr 1fr}.controls button{grid-column:1/-1;justify-content:center}.site-section{padding:15px;border-radius:9px}.metric-grid{grid-template-columns:1fr 1fr;gap:7px}.metric-card{min-height:72px;padding:10px}.metric-value{font-size:16px}.report-meta{align-items:flex-start;flex-direction:column;gap:3px}}
-</style>
-<style>
-.notice.error{margin:0 0 18px;padding:12px 14px;border-radius:8px;background:#fff1f1;color:#8a1f1f;border:1px solid #efc4c4;font-size:13px}
-.notice.error strong{display:block;margin-bottom:3px}
-.empty-state{text-align:center;padding:48px 20px;color:#667784}
-.empty-icon{margin:0 auto 12px;width:46px;height:46px;border-radius:10px;display:grid;place-items:center;background:#071a2b;color:white;font-weight:900}
-</style>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CE RMS — Management Dashboard</title>
+<link rel="stylesheet" href="css/app.css?v=4.0.3">
 </head>
 <body>
-<main class="app-shell">
-<header class="topbar">
-  <div class="brand"><div class="brand-mark">CE</div><div><div class="brand-name">CIRCULAR ENERGY</div><div class="brand-product">RMS REPORTS</div></div></div>
-  <div class="status-pill">● <span id="status">Supabase • SNAPSHOT</span></div>
+<!-- CE_RMS Dashboard V3 acceptance candidate. Central RPC mapping: config/app-config.js.
+     Uses public browser credentials only. Source V2.2 preserved, production not touched. -->
+<header>
+    <div class="head">
+        <div>
+            <b>Circular Energy Management Dashboard</b>
+            <small id="pageSubtitle">Battery Usage</small><div id="reportProvenance" class="v4-provenance" role="status">Data: awaiting report</div>
+        </div>
+        <div class="header-controls">
+            <label>Reporting country<select id="countrySelect" aria-label="Reporting country"><option value="Nigeria">Nigeria · GMT+1</option></select></label><span>GUI V4 WIP · Africa/Lagos</span>
+            <label>Start date<span class="v3-date-wrap"><input id="startDateView" class="v3-date-view" type="text" readonly aria-label="Pick report start date" placeholder="mmm/dd/yyyy"><input id="startDate" class="v3-date-native" type="date" aria-label="Start date calendar"></span></label>
+            <label>End date<span class="v3-date-wrap"><input id="endDateView" class="v3-date-view" type="text" readonly aria-label="Pick report end date" placeholder="mmm/dd/yyyy"><input id="endDate" class="v3-date-native" type="date" aria-label="End date calendar"></span></label>
+            <label>Site<select id="site"><option value="ALL">All Sites</option></select></label>
+            <button id="refresh">Refresh</button>
+        </div>
+    </div>
+    <div class="v22-preset-bar" aria-label="Reporting date shortcuts"><button data-date-preset="yesterday">Yesterday</button><button data-date-preset="mtd">Month to Date</button><button data-date-preset="lastmonth">Last Month</button><button data-date-preset="week" id="weekQuick">Last Calendar Week</button><label>Calendar week <select id="weekSelect" aria-label="Select ISO calendar week"></select></label><span class="v22-datahealth" id="healthHeader">Data Health: awaiting report</span></div>
+    
+    <nav>
+        <button data-page="overview">Executive Dashboard</button>
+        <button data-page="uptime">Uptime &amp; Backup SLA</button>
+        <button data-page="energy">Energy Analysis</button>
+        <button data-page="bms">Battery BMS Monitoring</button>
+        <button data-page="health">Data Health</button>
+    <span class="v3-auth-status" id="userStatus">Company Google sign-in required</span><button id="logout" class="v3-logout" hidden>Sign out</button>
+    </nav>
 </header>
-<div class="content">
-  <section class="hero">
-    <div><h1>RMS Monthly Report</h1><p>Energy, battery, solar, DG/grid and customer-load performance across the CE monitored sites.</p></div>
-    <div class="controls">
-      <label><span>Start date</span><input id="startDate" type="date"></label>
-      <label><span>End date</span><input id="endDate" type="date"></label>
-      <button id="refresh">REFRESH FROM SUPABASE</button>
-    </div>
-  </section>
-  <div id="error" class="notice error" hidden></div>
-  <div id="report"></div>
-</div>
-<footer>CE RMS Reports · HTTPS web app · PostgreSQL remains the calculation layer.</footer>
+<main>
+    <section class="intro" id="pageIntro">
+        <div>
+            <h1 id="pageTitle">Uptime &amp; Backup SLA <span class="version-badge">V1.7</span></h1>
+            <p id="pageDescription">Site uptime, CE backup SLA performance, battery usage and energy throughput.</p><small id="executiveContext" hidden>All values reflect the imported reporting window; no invented SLA threshold</small>
+        </div>
+    </section>
+    <div id="error" class="notice error" hidden></div>
+    <div id="app"></div>
 </main>
-<script>
-
-const SUPABASE_URL = "https://aynbticohhzgktonsxud.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF5bmJ0aWNvaGh6Z2t0b25zeHVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA0NDk4ODAsImV4cCI6MjEwNjAyNTg4MH0.OQVz8xQl5rg5IRfxo35_JN3xBceBOTVLdqCQazbYJko";
-const SITE_ORDER = ["ABJ-1","ABJ-2","LAG-1","LAG-2"];
-const INITIAL_ROWS = [{"site_id":"ABJ-1","month_start":"2026-08-01","month_end":"2026-08-31","battery_energy_throughput_kwh":48.680233,"battery_run_hrs_total":13.806452,"battery_run_hrs_prorated":12.170058,"battery_cycles":1.521257,"solar_energy_kwh":25.240278,"solar_energy_pct":0.234146,"solar_avg_per_hour_kwh":2.299629,"solar_availability_per_day_hrs":10.975806,"solar_designed_capacity_kw":12.4,"peak_solar_power_kw":7.828929,"solar_performance_80_pct":0.553127,"solar_psh":2.544383,"dg_grid_energy_kwh":82.556837,"dg_grid_energy_pct":0.765854,"dg_grid_run_hrs":7.532258,"total_energy_kwh":107.797115,"customer_energy_consumption_kwh":106.301788,"backup_sla_hrs":8,"sanctioned_load_kw":4,"customer_average_load_kw":4.786282,"customer_peak_load_kw":6.8694},{"site_id":"ABJ-2","month_start":"2026-08-01","month_end":"2026-08-31","battery_energy_throughput_kwh":36.139534,"battery_run_hrs_total":11.701613,"battery_run_hrs_prorated":9.034883,"battery_cycles":1.12936,"solar_energy_kwh":36.268187,"solar_energy_pct":0.345143,"solar_avg_per_hour_kwh":3.071896,"solar_availability_per_day_hrs":11.806452,"solar_designed_capacity_kw":12.4,"peak_solar_power_kw":10.1529,"solar_performance_80_pct":0.794797,"solar_psh":3.656067,"dg_grid_energy_kwh":68.813469,"dg_grid_energy_pct":0.654857,"dg_grid_run_hrs":9.612903,"total_energy_kwh":105.081655,"customer_energy_consumption_kwh":102.64317,"backup_sla_hrs":8,"sanctioned_load_kw":4,"customer_average_load_kw":4.357327,"customer_peak_load_kw":6.126925},{"site_id":"LAG-1","month_start":"2026-08-01","month_end":"2026-08-31","battery_energy_throughput_kwh":11.723321,"battery_run_hrs_total":3.032258,"battery_run_hrs_prorated":2.93083,"battery_cycles":0.293083,"solar_energy_kwh":0,"solar_energy_pct":0,"solar_avg_per_hour_kwh":null,"solar_availability_per_day_hrs":0,"solar_designed_capacity_kw":12.4,"peak_solar_power_kw":0,"solar_performance_80_pct":0,"solar_psh":null,"dg_grid_energy_kwh":94.809856,"dg_grid_energy_pct":1,"dg_grid_run_hrs":20.524194,"total_energy_kwh":94.809856,"customer_energy_consumption_kwh":92.917872,"backup_sla_hrs":10,"sanctioned_load_kw":4,"customer_average_load_kw":4.020173,"customer_peak_load_kw":5.356256},{"site_id":"LAG-2","month_start":"2026-08-01","month_end":"2026-08-31","battery_energy_throughput_kwh":6.090947,"battery_run_hrs_total":2.66129,"battery_run_hrs_prorated":1.522737,"battery_cycles":0.190342,"solar_energy_kwh":0,"solar_energy_pct":0,"solar_avg_per_hour_kwh":null,"solar_availability_per_day_hrs":0,"solar_designed_capacity_kw":12.4,"peak_solar_power_kw":0,"solar_performance_80_pct":0,"solar_psh":null,"dg_grid_energy_kwh":55.087721,"dg_grid_energy_pct":1,"dg_grid_run_hrs":20.983871,"total_energy_kwh":55.087721,"customer_energy_consumption_kwh":55.278495,"backup_sla_hrs":8,"sanctioned_load_kw":4,"customer_average_load_kw":2.370684,"customer_peak_load_kw":3.20208}];
-
-const $ = (id) => document.getElementById(id);
-const n = (v, d=2) => v === null || v === undefined || Number.isNaN(Number(v)) ? "—" : Number(v).toFixed(d);
-const pct = (v) => v === null || v === undefined || Number.isNaN(Number(v)) ? "—" : (Number(v)*100).toFixed(1) + "%";
-const dateLabel = (s) => {
-  const d = new Date(s + "T00:00:00");
-  return d.toLocaleDateString("en-US",{month:"short",day:"2-digit",year:"numeric"});
-};
-const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-function metric(label, value, unit="", tone="default") {
-  return `<div class="metric-card metric-${tone}">
-    <div class="metric-label">${label}</div>
-    <div class="metric-value">${value}${unit ? `<span class="metric-unit">${unit}</span>` : ""}</div>
-  </div>`;
-}
-
-function siteReport(row) {
-  const loc = row.site_id.startsWith("ABJ") ? "Abuja" : "Lagos";
-  return `<section class="site-section">
-    <div class="site-heading"><div><h2>${esc(row.site_id)}</h2><span class="site-location">${loc}, Nigeria</span></div>
-      <div class="site-load"><strong>${n(row.sanctioned_load_kw,0)} kW</strong><span>sanctioned load</span></div>
-    </div>
-    <div class="section-title">Battery</div>
-    <div class="metric-grid">
-      ${metric("Energy Throughput",n(row.battery_energy_throughput_kwh),"kWh","blue")}
-      ${metric("Run Hours",n(row.battery_run_hrs_total),"h")}
-      ${metric("Prorated Run Hours",n(row.battery_run_hrs_prorated),"h")}
-      ${metric("Battery Cycles",n(row.battery_cycles),"","green")}
-    </div>
-    <div class="section-title">Solar</div>
-    <div class="metric-grid">
-      ${metric("Solar Energy",n(row.solar_energy_kwh),"kWh","green")}
-      ${metric("Solar Contribution",pct(row.solar_energy_pct))}
-      ${metric("Avg. Production / Hour",n(row.solar_avg_per_hour_kwh),"kWh")}
-      ${metric("Availability / Day",n(row.solar_availability_per_day_hrs),"h")}
-      ${metric("Designed Capacity",n(row.solar_designed_capacity_kw),"kW")}
-      ${metric("Peak Solar Power",n(row.peak_solar_power_kw),"kW")}
-      ${metric("Performance @80%",pct(row.solar_performance_80_pct))}
-      ${metric("PSH",n(row.solar_psh),"h")}
-    </div>
-    <div class="section-title">DG / Grid</div>
-    <div class="metric-grid">
-      ${metric("Energy Production",n(row.dg_grid_energy_kwh),"kWh","amber")}
-      ${metric("Contribution",pct(row.dg_grid_energy_pct))}
-      ${metric("Run Hours",n(row.dg_grid_run_hrs),"h")}
-    </div>
-    <div class="section-title">Customer Load & Energy</div>
-    <div class="metric-grid">
-      ${metric("Total Energy",n(row.total_energy_kwh),"kWh")}
-      ${metric("Customer Consumption",n(row.customer_energy_consumption_kwh),"kWh")}
-      ${metric("Backup SLA",n(row.backup_sla_hrs,0),"h")}
-      ${metric("Average Load",n(row.customer_average_load_kw),"kW")}
-      ${metric("Peak Load",n(row.customer_peak_load_kw),"kW")}
-    </div>
-  </section>`;
-}
-
-function render(rows, statusText="Supabase") {
-  const sorted = [...rows].sort((a,b)=>SITE_ORDER.indexOf(a.site_id)-SITE_ORDER.indexOf(b.site_id));
-  const start = $("startDate").value, end = $("endDate").value;
-  $("status").textContent = statusText;
-  $("report").innerHTML = sorted.length
-    ? `<div class="report-meta"><span>Reporting period: <strong>${dateLabel(start)}</strong> — <strong>${dateLabel(end)}</strong></span><span>${sorted.length} sites returned</span></div>${sorted.map(siteReport).join("")}`
-    : `<div class="empty-state"><div class="empty-icon">CE</div><h2>No report loaded</h2><p>No site data was returned for the selected period.</p></div>`;
-}
-
-function getKey() {
-  return SUPABASE_ANON_KEY;
-}
-
-async function ensureKey() {
-  return SUPABASE_ANON_KEY;
-}
-
-async function refresh() {
-  const start = $("startDate").value, end = $("endDate").value;
-  if (!start || !end) return;
-  if (start > end) {
-    $("error").textContent = "Start date must be on or before end date.";
-    $("error").hidden = false;
-    return;
-  }
-  const btn = $("refresh");
-  btn.disabled = true;
-  btn.innerHTML = "REFRESHING...";
-  $("error").hidden = true;
-  try {
-    const key = await ensureKey();
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_rms_monthly_output`, {
-      method:"POST",
-      mode:"cors",
-      headers:{
-        "apikey":key,
-        "Authorization":`Bearer ${key}`,
-        "Content-Type":"application/json",
-        "Accept":"application/json"
-      },
-      body:JSON.stringify({p_start_date:start,p_end_date:end})
-    });
-    const body = await response.text();
-    if (!response.ok) throw new Error(`Supabase request failed (${response.status}): ${body || response.statusText}`);
-    let data;
-    try { data = JSON.parse(body); } catch { throw new Error("Supabase returned invalid JSON."); }
-    if (!Array.isArray(data)) throw new Error("Supabase returned an unexpected response.");
-    render(data, "Supabase • LIVE");
-  } catch (e) {
-    $("error").textContent = e instanceof Error ? e.message : "Unable to retrieve report.";
-    $("error").hidden = false;
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = "REFRESH FROM SUPABASE";
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Safari/iPad cannot reliably make cross-origin fetch() requests from a local
-  // file:// page. The same application works normally when served over HTTPS.
-  const isLocalFile = location.protocol === "file:";
-  const isAppleMobile = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  const btn = $("refresh");
-  if (isLocalFile && isAppleMobile) {
-    btn.disabled = true;
-    btn.title = "Open this application from an HTTPS address on iPad/iPhone.";
-    $("error").innerHTML = "<strong>iPad/iPhone:</strong> this app must be opened from an HTTPS web address. Safari blocks the required cross-origin data request when this HTML is opened directly as a local file.";
-    $("error").hidden = false;
-    render([], "HTTPS required on iPad/iPhone");
-  } else {
-    render([], "Supabase • LIVE");
-  }
-  btn.addEventListener("click", refresh);
-});
-
-</script>
+<div id="modal"></div>
+<div id="loginGate" class="v3-login-gate" hidden><div class="v3-login-panel"><div class="v3-logo">CE</div><h1>Circular Energy Dashboard</h1><p>Sign in with your authorized company Google account to access the management reports.</p><button id="loginGoogle" class="v3-login-button">Continue with Google</button><p class="v3-login-foot">Authorized domain: @thecircularenergy.com</p><p id="loginError" class="v3-login-error"></p></div></div>
+<div id="toast"></div>
+<script type="module" src="js/app.js?v=4.0.3"></script>
 </body>
 </html>
