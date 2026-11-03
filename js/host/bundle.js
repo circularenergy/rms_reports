@@ -15,7 +15,7 @@ export async function fetchBundle(page,c,cache,generation,onProgress=()=>{}){
  if(!cache.active(generation))return null;
  const m=months[index],mc=context(m.start,m.end,c.site,c.identity,c.policy);
  const hit=await cache.get(cache.key('load_profile',def,mc),async signal=>validateResponse(await rpc(def.name,def.params(mc),{signal,onStart:()=>emit(id,'loading',{completed:index,total:12})}),def,mc));
- result.push({...m,sites:hit.data.site_summary});evidence.push({retrievedAt:hit.retrievedAt,elapsedMs:hit.elapsedMs,reused:hit.reused,startAt:mc.startAt,endAt:mc.endAt});emit(id,'loading',{completed:index+1,total:12});}
+ result.push({...m,sites:hit.data.site_summary});evidence.push({retrievedAt:hit.retrievedAt,elapsedMs:hit.elapsedMs,reused:hit.reused,startAt:mc.startAt,endAt:mc.endAt});emit(id,hit.reused?'reused':'loading',{completed:index+1,total:12});}
  inputs.profiles=result;provenance.profiles={retrievedAt:Math.min(...evidence.map(x=>x.retrievedAt)),reused:evidence.every(x=>x.reused),months:evidence,api:def.name};emit(id,'complete',{reused:provenance.profiles.reused});continue;
  }
  const def=API_REGISTRY[id];if(!def)throw Error('Unknown registered API '+id);
