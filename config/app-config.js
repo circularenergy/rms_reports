@@ -10,6 +10,6 @@ export const APP_CONFIG = Object.freeze({
  commentary: {mode:'disabled',serviceEndpoint:null},
  version: '4.0.3-integration-candidate', configurationVersion: '20261030-3',
  loading:{maxConcurrentRequests:1,showAfterMs:120},
- cache: {ttlMs:300000,maxEntries:64}, sites:['ABJ-1','ABJ-2','LAG-1','LAG-2'],
+ cache: {mode:'manual',ttlMs:300000,maxEntries:64}, sites:['ABJ-1','ABJ-2','LAG-1','LAG-2'],
  dataHealth: {policyVersion:'1.0.0-five-api-63-fields'}
 });
