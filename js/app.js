@@ -11,7 +11,8 @@ import {LoadingPanel} from './host/loading-panel.js';
 const loadingPanel=new LoadingPanel();
 const cache=new ReportCache(CFG.cache),site=document.getElementById('site'),startDate=document.getElementById('startDate'),endDate=document.getElementById('endDate'),refresh=document.getElementById('refresh'),app=document.getElementById('app');
 const centralPage={label:'Dashboard data',required:[],optional:[...new Set(Object.values(PAGES).flatMap(p=>[...p.required,...p.optional]))]};
-let freshnessTimer;
+// One snapshot per current selection. Navigation never fetches an already loaded bundle.
+let activeSelection=null,loadedBundle=null;
 let userAllowed=false,userIdentity='',currentPage=Object.keys(PAGES).find(k=>PAGES[k].hash===location.hash)||'overview';
 const NIGERIA_TZ='Africa/Lagos';
 function lagosToday(){const parts=new Intl.DateTimeFormat('en-CA',{timeZone:NIGERIA_TZ,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const v=Object.fromEntries(parts.map(p=>[p.type,p.value]));return `${v.year}-${v.month}-${v.day}`;}
@@ -31,20 +32,35 @@ function initDateShortcuts(){const today=lagosToday();startDate.value=today.slic
  document.querySelectorAll('[data-date-preset]').forEach(btn=>btn.onclick=()=>{switch(btn.dataset.datePreset){case 'yesterday':{const day=addDays(lagosToday(),-1);pickRange(day,day);break;}case 'mtd':{const d=lagosToday();pickRange(d.slice(0,7)+'-01',d);break;}case 'lastmonth':{const d=addDays(lagosToday().slice(0,7)+'-01',-1);pickRange(d.slice(0,7)+'-01',d);break;}case 'week':{const start=addDays(isoWeekStart(lagosToday()),-7);pickRange(start,addDays(start,6));if(dropdown)dropdown.value=start;break;}}});updateCalendarLabel();}
 
 
-function clearReport(){disposeFrame();clearTimeout(freshnessTimer);document.getElementById('reportProvenance').textContent='Data: preparing selected report';app.replaceChildren();document.getElementById('modal').replaceChildren();document.getElementById('healthHeader').textContent='Data Health: awaiting current report';}
+function clearReport(){disposeFrame();document.getElementById('reportProvenance').textContent='Data: preparing selected report';app.replaceChildren();document.getElementById('modal').replaceChildren();document.getElementById('healthHeader').textContent='Data Health: awaiting current report';}
 function pending(text){const p=document.createElement('div');p.className='v3-report-pending';p.role='status';p.textContent=text;app.append(p);}
-function updateShell(){document.getElementById('executiveContext').hidden=currentPage!=='overview';const page=PAGES[currentPage];document.querySelectorAll('nav button[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===currentPage));document.getElementById('pageSubtitle').textContent=page.label;document.getElementById('pageTitle').textContent=page.label;document.getElementById('pageDescription').textContent='';document.getElementById('pageIntro').hidden=false;document.body.classList.toggle('v4-frame-page',Boolean(page.frame));}
+function updateShell(){compactHeader.update(PAGES[currentPage].label);document.getElementById('executiveContext').hidden=currentPage!=='overview';const page=PAGES[currentPage];document.querySelectorAll('nav button[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===currentPage));document.getElementById('pageSubtitle').textContent=page.label;document.getElementById('pageTitle').textContent=page.label;document.getElementById('pageDescription').textContent='';document.getElementById('pageIntro').hidden=false;document.body.classList.toggle('v4-frame-page',Boolean(page.frame));}
 export async function load({force=false}={}){
- loadingPanel.finish(loadingPanel.generation);const generation=cache.activate({refresh:force});clearReport();updateShell();document.getElementById('error').hidden=true;
+ const selection=JSON.stringify([startDate.value,endDate.value,site.value,userIdentity,CFG.configurationVersion,CFG.dataHealth.policyVersion]);
+ const selectionChanged=selection!==activeSelection;
+ if(force||selectionChanged){loadedBundle=null;activeSelection=selection;}
+ loadingPanel.finish(loadingPanel.generation);const generation=cache.activate({refresh:force||selectionChanged});clearReport();updateShell();document.getElementById('error').hidden=true;
  if(!userAllowed)return;
  refresh.disabled=true;refresh.textContent='Refreshing…';
- try{const c=context(startDate.value,endDate.value,site.value,userIdentity,CFG.configurationVersion+'|'+CFG.dataHealth.policyVersion);const page=PAGES[currentPage];loadingPanel.start(centralPage,generation,CFG.loading?.showAfterMs??120);pending('Loading '+page.label+' · '+c.start+' to '+c.end+' · '+(c.site==='ALL'?'All Sites':c.site));
- const bundle=await fetchBundle(centralPage,c,cache,generation,event=>loadingPanel.update(event,generation));if(!bundle||!cache.active(generation))return;
+ try{const c=context(startDate.value,endDate.value,site.value,userIdentity,CFG.configurationVersion+'|'+CFG.dataHealth.policyVersion);const page=PAGES[currentPage];pending('Loading '+page.label+' · '+c.start+' to '+c.end+' · '+(c.site==='ALL'?'All Sites':c.site));
+ let panelStarted=false;const progress=new Map();
+ const onProgress=event=>{
+  progress.set(event.id,event);
+  // Open the API panel only when an actual network request starts.
+  if(!panelStarted&&event.state==='loading'){
+   loadingPanel.start(centralPage,generation,CFG.loading?.showAfterMs??120);panelStarted=true;
+   for(const value of progress.values())loadingPanel.update(value,generation);
+  }else if(panelStarted)loadingPanel.update(event,generation);
+ };
+ const bundle=loadedBundle?{...loadedBundle,generation}:await fetchBundle(centralPage,c,cache,generation,onProgress);
+ if(!bundle||!cache.active(generation))return;
+ loadedBundle=bundle;
+ // Report rendering is separate from API fetching; do not hold a completed API popup open.
+ if(panelStarted)loadingPanel.finish(generation);
  for(const id of page.required)if(!bundle.inputs[id])throw Error((API_REGISTRY[id]?.label||id)+': '+(bundle.unavailable[id]||'Required data unavailable'));
  const provenance=Object.entries(bundle.provenance).map(([k,v])=>(API_REGISTRY[k]?.label||(k==='profiles'?'Monthly energy profile':k))+': '+new Date(v.retrievedAt).toLocaleString()+(v.reused?' (reused)':''));
  const status=document.getElementById('reportProvenance'),oldest=Math.min(...Object.values(bundle.provenance).map(v=>v.retrievedAt));
- status.textContent='Data current · '+c.start+' — '+c.end+' · '+(c.site==='ALL'?'All Sites':c.site)+' · Retrieved '+new Date(oldest).toLocaleString()+' · Reuse up to '+Math.round(CFG.cache.ttlMs/60000)+' min';status.title=provenance.join(' · ');
- freshnessTimer=setTimeout(()=>{if(cache.active(generation))load();},Math.max(1,oldest+CFG.cache.ttlMs-Date.now()));
+ status.textContent='Data retrieved · '+c.start+' — '+c.end+' · '+(c.site==='ALL'?'All Sites':c.site)+' · '+new Date(oldest).toLocaleString()+' · Refresh to update';status.title=provenance.join(' · ');
  const health=bundle.inputs.data_health;document.getElementById('healthHeader').textContent=health?'Data Health: '+health.sites.filter(s=>c.site==='ALL'||s.site===c.site).map(s=>s.site+' '+(s.available_records??'N/A')+'/'+(s.expected_records??'N/A')+' records').join(' · '):'Data Health: unavailable';
  if(page.frame){await mountFrame(app,page,bundle,()=>cache.active(generation));}
  else{const mod=await import(new URL(page.module, new URL('./host/',import.meta.url)));if(!cache.active(generation))return;app.replaceChildren();mod.mount(bundle);}
@@ -52,10 +68,53 @@ export async function load({force=false}={}){
  finally{loadingPanel.finish(generation);if(cache.active(generation)){refresh.disabled=false;refresh.textContent='Refresh';}}
 }
 function setPage(key){if(!PAGES[key])return;currentPage=key;history.replaceState(null,'',PAGES[key].hash);load();}
-async function setupAuth(){document.getElementById('loginGoogle').onclick=signInGoogle;document.getElementById('logout').onclick=()=>{cache.clear();clearReport();clearAuthToken();userAllowed=false;location.replace(location.pathname);};
+async function setupAuth(){document.getElementById('loginGoogle').onclick=signInGoogle;document.getElementById('logout').onclick=()=>{loadedBundle=null;activeSelection=null;cache.clear();clearReport();clearAuthToken();userAllowed=false;location.replace(location.pathname);};
  recoverAuthSession();let user=null;try{user=await verifiedUser()}catch{}
  const email=String(user?.email||'').toLowerCase();if(!(email.endsWith('@'+CFG.auth.domain)||(CFG.auth.allowedEmails||[]).includes(email))||!Boolean(user?.email_confirmed_at||user?.confirmed_at)){document.getElementById('loginGate').hidden=false;if(user?.email)document.getElementById('loginError').textContent='This account is not verified or is not approved for this dashboard.';return false;}
  userIdentity=user.id+'|'+email;userAllowed=true;document.getElementById('loginGate').hidden=true;document.getElementById('logout').hidden=false;document.getElementById('userStatus').textContent=email;return true;}
+
+// Shared shell enhancement; report-page files and the existing CSS stay untouched.
+// Wait until the header's original space is scrolled past before hiding it, so
+// collapsing the sticky header never leaves an empty gap above report content.
+function installCompactHeader(){
+ const header=document.querySelector('body>header');
+ const style=document.createElement('style');style.id='ce-compact-header-style';
+ style.textContent=`
+ body>header{transition:transform 220ms ease;will-change:transform}
+ body>header.ce-header-hidden{transform:translateY(calc(-100% + 36px))}
+ .ce-compact-header{position:fixed;inset:0 0 auto;z-index:11;height:36px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px;border:0;border-bottom:1px solid #d5e1ea;background:#fff;color:#17324d;font:600 13px Arial,sans-serif;text-align:left;box-shadow:0 2px 8px #17324d12;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-100%);transition:transform 220ms ease,opacity 180ms ease,visibility 220ms;cursor:pointer}
+ .ce-compact-header.ce-visible{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+ .ce-compact-header span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .ce-compact-header span:last-child{flex:none;font-size:11px;font-weight:400}
+ @media(prefers-reduced-motion:reduce){body>header,.ce-compact-header{transition:none}}
+ @media print{body>header{transform:none!important}.ce-compact-header{display:none!important}}
+ `;document.head.append(style);
+ const strip=document.createElement('button');strip.type='button';strip.className='ce-compact-header';
+ const title=document.createElement('span'),hint=document.createElement('span');hint.textContent='Show controls ▾';strip.append(title,hint);header.after(strip);
+ let hidden=false,lastY=Math.max(0,scrollY),direction=0,distance=0,raf=0;
+ function setHidden(value){
+  if(value===hidden)return;hidden=value;
+  header.classList.toggle('ce-header-hidden',hidden);header.inert=hidden;
+  strip.classList.toggle('ce-visible',hidden);strip.setAttribute('aria-expanded',String(!hidden));
+  // Existing iframe viewport handling uses the header bottom for popup placement.
+  dispatchEvent(new Event('resize'));
+ }
+ function show(){setHidden(false);distance=0;lastY=Math.max(0,scrollY);}
+ function tick(){
+  raf=0;const y=Math.max(0,Math.min(scrollY,Math.max(0,document.documentElement.scrollHeight-innerHeight)));
+  const delta=y-lastY;lastY=y;if(Math.abs(delta)<1)return;
+  const next=delta>0?1:-1;if(next!==direction){direction=next;distance=0;}distance+=Math.abs(delta);
+  if(y<8||(next<0&&distance>=8)){setHidden(false);distance=0;}
+  else if(next>0&&distance>=20&&y>=header.offsetHeight-36&&!header.querySelector('input:focus,select:focus')){setHidden(true);distance=0;}
+ }
+ addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(tick);},{passive:true});
+ strip.addEventListener('click',show);
+ header.addEventListener('transitionend',e=>{if(e.target===header)dispatchEvent(new Event('resize'));});
+ addEventListener('resize',()=>{if(scrollY<8)setHidden(false);},{passive:true});
+ return {update(label){title.textContent=label;strip.setAttribute('aria-label',label+' — show dashboard controls');show();}};
+}
+const compactHeader=installCompactHeader();
+
 CFG.sites.forEach(id=>site.add(new Option(id,id)));site.onchange=()=>load();startDate.onchange=endDate.onchange=()=>{updateCalendarLabel();load()};refresh.onclick=()=>load({force:true});document.querySelectorAll('nav button[data-page]').forEach(b=>{b.textContent=PAGES[b.dataset.page].label;b.onclick=()=>setPage(b.dataset.page)});addEventListener('hashchange',()=>{const key=Object.keys(PAGES).find(k=>PAGES[k].hash===location.hash);if(key&&key!==currentPage){currentPage=key;load();}});
 initDateShortcuts();updateShell();if(await setupAuth())load();
 // Diagnostic state contains no credentials or API payloads.
