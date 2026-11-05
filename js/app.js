@@ -15,6 +15,7 @@ const centralPage={label:'Dashboard data',required:[],optional:[...new Set(Objec
 let activeSelection=null,loadedBundle=null;
 let userAllowed=false,userIdentity='',currentPage=Object.keys(PAGES).find(k=>PAGES[k].hash===location.hash)||'overview';
 const NIGERIA_TZ='Africa/Lagos';
+let selectedDatePreset='mtd',dateSelection=null;
 function lagosToday(){const parts=new Intl.DateTimeFormat('en-CA',{timeZone:NIGERIA_TZ,year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const v=Object.fromEntries(parts.map(p=>[p.type,p.value]));return `${v.year}-${v.month}-${v.day}`;}
 const dateISO=d=>d.toISOString().slice(0,10);
 const addDays=(iso,days)=>{const d=new Date(`${iso}T12:00:00Z`);d.setUTCDate(d.getUTCDate()+days);return dateISO(d);};
@@ -24,18 +25,52 @@ function updateCalendarLabel(){
  const viewStart=document.getElementById('startDateView'),viewEnd=document.getElementById('endDateView');
  if(viewStart)viewStart.value=displayDate(startDate.value);if(viewEnd)viewEnd.value=displayDate(endDate.value);
  const label=document.getElementById('weekQuick');if(label)label.textContent=`Week ${isoWeekLabel(startDate.value||lagosToday())}`;}
-function pickRange(start,end){startDate.value=start;endDate.value=end;updateCalendarLabel();load();}
-function initDateShortcuts(){const today=lagosToday();startDate.value=today.slice(0,7)+'-01';endDate.value=today;
- const previous=addDays(today.slice(0,7)+'-01',-1);const lastWeek=addDays(isoWeekStart(today),-7);
- const dropdown=document.getElementById('weekSelect');if(dropdown){let monday=isoWeekStart(today);for(let i=0;i<105;i++){let begin=addDays(monday,-i*7);const opt=document.createElement('option');opt.value=begin;opt.textContent=`${isoWeekLabel(begin)} (${begin} — ${addDays(begin,6)})`;dropdown.add(opt);}dropdown.value=lastWeek;dropdown.onchange=()=>pickRange(dropdown.value,addDays(dropdown.value,6));}
- [['startDateView',startDate],['endDateView',endDate]].forEach(([id,native])=>{const control=document.getElementById(id);if(control)control.onclick=()=>{if(native.showPicker)native.showPicker();else native.focus();};});
- document.querySelectorAll('[data-date-preset]').forEach(btn=>btn.onclick=()=>{switch(btn.dataset.datePreset){case 'yesterday':{const day=addDays(lagosToday(),-1);pickRange(day,day);break;}case 'mtd':{const d=lagosToday();pickRange(d.slice(0,7)+'-01',d);break;}case 'lastmonth':{const d=addDays(lagosToday().slice(0,7)+'-01',-1);pickRange(d.slice(0,7)+'-01',d);break;}case 'week':{const start=addDays(isoWeekStart(lagosToday()),-7);pickRange(start,addDays(start,6));if(dropdown)dropdown.value=start;break;}}});updateCalendarLabel();}
+// The native ISO values are the single source for display, cache keys and RPC dates.
+function rememberDates(){dateSelection={start:startDate.value,end:endDate.value};updateCalendarLabel();}
+function presetRange(preset){
+ const today=lagosToday();
+ switch(preset){
+  case 'mtd':return [today.slice(0,7)+'-01',today];
+  case 'yesterday':{const d=addDays(today,-1);return [d,d];}
+  case 'lastmonth':{const d=addDays(today.slice(0,7)+'-01',-1);return [d.slice(0,7)+'-01',d];}
+  case 'week':{const d=addDays(isoWeekStart(today),-7);return [d,addDays(d,6)];}
+  default:return null;
+ }
+}
+function synchronizeDates({rollPreset=false}={}){
+ // A manually edited calendar must never be silently moved to today.
+ if(dateSelection&&(startDate.value!==dateSelection.start||endDate.value!==dateSelection.end))selectedDatePreset='custom';
+ const dates=rollPreset?presetRange(selectedDatePreset):null;
+ if(dates){startDate.value=dates[0];endDate.value=dates[1];}
+ rememberDates();
+}
+function pickRange(start,end,preset='custom'){
+ selectedDatePreset=preset;startDate.value=start;endDate.value=end;rememberDates();load();
+}
+function initDateShortcuts(){
+ const [start,end]=presetRange('mtd');startDate.value=start;endDate.value=end;rememberDates();
+ const dropdown=document.getElementById('weekSelect');if(dropdown){const monday=isoWeekStart(lagosToday());for(let i=0;i<105;i++){const begin=addDays(monday,-i*7);const opt=document.createElement('option');opt.value=begin;opt.textContent=`${isoWeekLabel(begin)} (${begin} — ${addDays(begin,6)})`;dropdown.add(opt);}dropdown.value=addDays(monday,-7);dropdown.onchange=()=>pickRange(dropdown.value,addDays(dropdown.value,6));}
+ [['startDateView',startDate],['endDateView',endDate]].forEach(([id,native])=>{
+  const control=document.getElementById(id);if(control){control.autocomplete='off';control.onclick=()=>{synchronizeDates();if(native.showPicker)native.showPicker();else native.focus();};}
+ });
+ document.querySelectorAll('[data-date-preset]').forEach(btn=>btn.onclick=()=>{
+  const preset=btn.dataset.datePreset,dates=presetRange(preset);if(!dates)return;
+  pickRange(...dates,preset);if(preset==='week'&&dropdown)dropdown.value=dates[0];
+ });
+ // Returning to a tab only repairs displayed labels. It does not fetch APIs or
+ // silently relabel the loaded report as belonging to a different date range.
+ for(const event of ['focus','pageshow'])addEventListener(event,()=>synchronizeDates());
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)synchronizeDates();});
+}
+
 
 
 function clearReport(){disposeFrame();document.getElementById('reportProvenance').textContent='Data: preparing selected report';app.replaceChildren();document.getElementById('modal').replaceChildren();document.getElementById('healthHeader').textContent='Data Health: awaiting current report';}
 function pending(text){const p=document.createElement('div');p.className='v3-report-pending';p.role='status';p.textContent=text;app.append(p);}
 function updateShell(){compactHeader.update(PAGES[currentPage].label);document.getElementById('executiveContext').hidden=currentPage!=='overview';const page=PAGES[currentPage];document.querySelectorAll('nav button[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===currentPage));document.getElementById('pageSubtitle').textContent=page.label;document.getElementById('pageTitle').textContent=page.label;document.getElementById('pageDescription').textContent='';document.getElementById('pageIntro').hidden=false;document.body.classList.toggle('v4-frame-page',Boolean(page.frame));}
 export async function load({force=false}={}){
+ // Refresh rolls relative presets forward before selection keys or API bounds are built.
+ synchronizeDates({rollPreset:force});
  const selection=JSON.stringify([startDate.value,endDate.value,site.value,userIdentity,CFG.configurationVersion,CFG.dataHealth.policyVersion]);
  const selectionChanged=selection!==activeSelection;
  if(force||selectionChanged){loadedBundle=null;activeSelection=selection;}
@@ -73,49 +108,46 @@ async function setupAuth(){document.getElementById('loginGoogle').onclick=signIn
  const email=String(user?.email||'').toLowerCase();if(!(email.endsWith('@'+CFG.auth.domain)||(CFG.auth.allowedEmails||[]).includes(email))||!Boolean(user?.email_confirmed_at||user?.confirmed_at)){document.getElementById('loginGate').hidden=false;if(user?.email)document.getElementById('loginError').textContent='This account is not verified or is not approved for this dashboard.';return false;}
  userIdentity=user.id+'|'+email;userAllowed=true;document.getElementById('loginGate').hidden=true;document.getElementById('logout').hidden=false;document.getElementById('userStatus').textContent=email;return true;}
 
-// Shared shell enhancement; report-page files and the existing CSS stay untouched.
-// Wait until the header's original space is scrolled past before hiding it, so
-// collapsing the sticky header never leaves an empty gap above report content.
+// Scroll-linked sticky header: its offset follows scroll distance, in either
+// direction, from the first pixel. Keeping it in normal flow avoids spacer gaps.
 function installCompactHeader(){
  const header=document.querySelector('body>header');
  const style=document.createElement('style');style.id='ce-compact-header-style';
  style.textContent=`
- body>header{transition:transform 220ms ease;will-change:transform}
- body>header.ce-header-hidden{transform:translateY(calc(-100% + 36px))}
- .ce-compact-header{position:fixed;inset:0 0 auto;z-index:11;height:36px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px;border:0;border-bottom:1px solid #d5e1ea;background:#fff;color:#17324d;font:600 13px Arial,sans-serif;text-align:left;box-shadow:0 2px 8px #17324d12;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-100%);transition:transform 220ms ease,opacity 180ms ease,visibility 220ms;cursor:pointer}
- .ce-compact-header.ce-visible{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+ body>header{position:sticky;top:0;transform:none;transition:none;z-index:10}
+ .ce-compact-header{position:fixed;inset:0 0 auto;z-index:11;height:36px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px;border:0;border-bottom:1px solid #d5e1ea;background:#fff;color:#17324d;font:600 13px Arial,sans-serif;text-align:left;box-shadow:0 2px 8px #17324d12;visibility:hidden;pointer-events:none;cursor:pointer}
+ .ce-compact-header.ce-visible{visibility:visible;pointer-events:auto}
  .ce-compact-header span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
  .ce-compact-header span:last-child{flex:none;font-size:11px;font-weight:400}
- @media(prefers-reduced-motion:reduce){body>header,.ce-compact-header{transition:none}}
- @media print{body>header{transform:none!important}.ce-compact-header{display:none!important}}
+ @media print{body>header{top:0!important}.ce-compact-header{display:none!important}}
  `;document.head.append(style);
  const strip=document.createElement('button');strip.type='button';strip.className='ce-compact-header';
  const title=document.createElement('span'),hint=document.createElement('span');hint.textContent='Show controls ▾';strip.append(title,hint);header.after(strip);
- let hidden=false,lastY=Math.max(0,scrollY),direction=0,distance=0,raf=0;
- function setHidden(value){
-  if(value===hidden)return;hidden=value;
-  header.classList.toggle('ce-header-hidden',hidden);header.inert=hidden;
-  strip.classList.toggle('ce-visible',hidden);strip.setAttribute('aria-expanded',String(!hidden));
-  // Existing iframe viewport handling uses the header bottom for popup placement.
-  dispatchEvent(new Event('resize'));
+ let offset=0,lastY=Math.max(0,scrollY),raf=0;
+ const limit=()=>Math.max(0,header.offsetHeight-36);
+ function paint(){
+  offset=Math.max(0,Math.min(offset,limit()));header.style.top=-offset+'px';
+  const collapsed=limit()>0&&offset>=limit()-0.5;
+  header.inert=collapsed;strip.classList.toggle('ce-visible',collapsed);strip.setAttribute('aria-expanded',String(!collapsed));
  }
- function show(){setHidden(false);distance=0;lastY=Math.max(0,scrollY);}
+ function show(){offset=0;lastY=Math.max(0,scrollY);paint();dispatchEvent(new Event('resize'));}
  function tick(){
   raf=0;const y=Math.max(0,Math.min(scrollY,Math.max(0,document.documentElement.scrollHeight-innerHeight)));
-  const delta=y-lastY;lastY=y;if(Math.abs(delta)<1)return;
-  const next=delta>0?1:-1;if(next!==direction){direction=next;distance=0;}distance+=Math.abs(delta);
-  if(y<8||(next<0&&distance>=8)){setHidden(false);distance=0;}
-  else if(next>0&&distance>=20&&y>=header.offsetHeight-36&&!header.querySelector('input:focus,select:focus')){setHidden(true);distance=0;}
+  const delta=y-lastY;lastY=y;
+  if(y===0)offset=0;
+  else offset+=delta;
+  paint();
  }
  addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(tick);},{passive:true});
  strip.addEventListener('click',show);
- header.addEventListener('transitionend',e=>{if(e.target===header)dispatchEvent(new Event('resize'));});
- addEventListener('resize',()=>{if(scrollY<8)setHidden(false);},{passive:true});
+ // Keyboard focus must reveal a partially obscured control, without changing scroll.
+ header.addEventListener('focusin',show);
+ addEventListener('resize',()=>{offset=Math.min(offset,limit());paint();},{passive:true});
  return {update(label){title.textContent=label;strip.setAttribute('aria-label',label+' — show dashboard controls');show();}};
 }
 const compactHeader=installCompactHeader();
 
-CFG.sites.forEach(id=>site.add(new Option(id,id)));site.onchange=()=>load();startDate.onchange=endDate.onchange=()=>{updateCalendarLabel();load()};refresh.onclick=()=>load({force:true});document.querySelectorAll('nav button[data-page]').forEach(b=>{b.textContent=PAGES[b.dataset.page].label;b.onclick=()=>setPage(b.dataset.page)});addEventListener('hashchange',()=>{const key=Object.keys(PAGES).find(k=>PAGES[k].hash===location.hash);if(key&&key!==currentPage){currentPage=key;load();}});
+CFG.sites.forEach(id=>site.add(new Option(id,id)));site.onchange=()=>load();startDate.onchange=endDate.onchange=()=>{selectedDatePreset='custom';rememberDates();load()};refresh.onclick=()=>load({force:true});document.querySelectorAll('nav button[data-page]').forEach(b=>{b.textContent=PAGES[b.dataset.page].label;b.onclick=()=>setPage(b.dataset.page)});addEventListener('hashchange',()=>{const key=Object.keys(PAGES).find(k=>PAGES[k].hash===location.hash);if(key&&key!==currentPage){currentPage=key;load();}});
 initDateShortcuts();updateShell();if(await setupAuth())load();
 // Diagnostic state contains no credentials or API payloads.
 window.CERMS={version:CFG.version,context:()=>({page:currentPage,start:startDate.value,end:endDate.value,site:site.value}),refresh:()=>load({force:true})};
